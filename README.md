@@ -36,4 +36,4 @@
 その他開発に使用したツール・サービス
 ...  
 ## リポジトリリンク集
-[フロントエンド](https://github.com/uwatcha/epsilon_App)
+[アプリ](https://github.com/uwatcha/epsilon_App)
