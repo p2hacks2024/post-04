@@ -1,4 +1,3 @@
-import 'package:epsilon_app/view/display_qr.dart';
 import 'package:epsilon_app/view/load_qr.dart';
 import 'package:flutter/material.dart';
 
