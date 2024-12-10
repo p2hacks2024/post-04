@@ -17,7 +17,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const DisplayQR()
+      home: const DisplayQr(
+        qrData: "#ff00ff",
+      )
     );
   }
 }
