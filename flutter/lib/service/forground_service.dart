@@ -1,15 +1,18 @@
 import 'dart:isolate';
 
+import 'package:epsilon_app/service/serial_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 
 @pragma('vm:entry-point')
 void startCallback() {
+  print("startCallback");
   FlutterForegroundTask.setTaskHandler(MyTaskHandler());
 }
 
 class MyTaskHandler extends TaskHandler {
   SendPort? _sendPort;
+  SerialService? serialService;
   int _count = 0;
   @override
   Future<void> onDestroy(DateTime timestamp) async {
@@ -27,6 +30,7 @@ class MyTaskHandler extends TaskHandler {
   @override
   Future<void> onStart(DateTime timestamp, TaskStarter starter) async {
     debugPrint("service started");
+    serialService = SerialService();
     print("service started");
   }
 

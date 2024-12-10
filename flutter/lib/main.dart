@@ -14,7 +14,6 @@ void main() async {
       channelId: 'foreground_service',
       channelName: 'Foreground Service Notification',
       channelDescription: 'This notification appears when the foreground service is running.',
-      channelImportance: NotificationChannelImportance.HIGH,
     ),
     iosNotificationOptions: const IOSNotificationOptions(
       showNotification: false,
@@ -40,6 +39,7 @@ class MyApp extends StatelessWidget {
     FlutterForegroundTask.addTaskDataCallback((data) {
       debugPrint("Task data: $data");
     });
+    debugPrint("initialized ");
     return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const UsbSerialSample(title: ""));
+        home: const ExamplePage());
   }
 }
 

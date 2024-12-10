@@ -27,7 +27,7 @@ class _UsbSerialSampleState extends State<UsbSerialSample> {
   String reply = "";
 
   Future<bool> _connectTo(device) async {
-    print('connectTo() start.');
+    print("connect to device: $device");
     _serialData.clear();
 
     if (_subscription != null) {
