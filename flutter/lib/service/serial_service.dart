@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:epsilon_app/model/enums/arduino_message_type_enum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:usb_serial/transaction.dart';
 import 'package:usb_serial/usb_serial.dart';
@@ -88,8 +89,13 @@ class SerialService {
 
     _transaction = Transaction.stringTerminated(_port!.inputStream as Stream<Uint8List>, Uint8List.fromList([13, 10]));
 
+    // Arduinoからのデータ受信
     _subscription = _transaction!.stream.listen((String line) {
-      print(line);
+      var message = ArduinoMessage.fromMessage(line);
+      if (message is ArduinoColorMessage) {
+        print(message.colorString);
+      }
+      print(message.type);
     });
 
     _status = "Connected";
