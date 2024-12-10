@@ -1,6 +1,32 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-void main() {
+import 'package:epsilon_app/foreground_example.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  FlutterForegroundTask.initCommunicationPort();
+
+  FlutterForegroundTask.init(
+    androidNotificationOptions: AndroidNotificationOptions(
+      channelId: 'foreground_service',
+      channelName: 'Foreground Service Notification',
+      channelDescription: 'This notification appears when the foreground service is running.',
+      channelImportance: NotificationChannelImportance.HIGH,
+    ),
+    iosNotificationOptions: const IOSNotificationOptions(
+      showNotification: false,
+      playSound: false,
+    ),
+    foregroundTaskOptions: ForegroundTaskOptions(
+      eventAction: ForegroundTaskEventAction.repeat(5000),
+      autoRunOnBoot: true,
+      autoRunOnMyPackageReplaced: true,
+      allowWakeLock: true,
+      allowWifiLock: true,
+    ),
+  );
   runApp(const MyApp());
 }
 
@@ -10,31 +36,87 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    FlutterForegroundTask.addTaskDataCallback((data) {
+      debugPrint("Task data: $data");
+    });
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          // This is the theme of your application.
+          //
+          // TRY THIS: Try running your application with "flutter run". You'll see
+          // the application has a purple toolbar. Then, without quitting the app,
+          // try changing the seedColor in the colorScheme below to Colors.green
+          // and then invoke "hot reload" (save your changes or press the "hot
+          // reload" button in a Flutter-supported IDE, or press "r" if you used
+          // the command line to start the app).
+          //
+          // Notice that the counter didn't reset back to zero; the application
+          // state is not lost during the reload. To reset the state, use hot
+          // restart instead.
+          //
+          // This works for code too, not just values: Most code changes can be
+          // tested with just a hot reload.
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: const ExamplePage());
+  }
+}
+
+Future<ServiceRequestResult> _startService() async {
+  if (await FlutterForegroundTask.isRunningService) {
+    return FlutterForegroundTask.restartService();
+  } else {
+    return FlutterForegroundTask.startService(
+      serviceId: 256,
+      notificationTitle: 'Foreground Service is running',
+      notificationText: 'Tap to return to the app',
+      notificationIcon: null,
+      notificationButtons: [
+        const NotificationButton(id: 'btn_hello', text: 'hello'),
+      ],
+      callback: (isRunning) => print('Service is running: $isRunning'),
     );
   }
 }
+
+Future<ServiceRequestResult> _stopService() async {
+  return FlutterForegroundTask.stopService();
+}
+
+Future<void> _requestPermissions() async {
+  // Android 13+, you need to allow notification permission to display foreground service notification.
+  //
+  // iOS: If you need notification, ask for permission.
+  final NotificationPermission notificationPermission = await FlutterForegroundTask.checkNotificationPermission();
+  if (notificationPermission != NotificationPermission.granted) {
+    await FlutterForegroundTask.requestNotificationPermission();
+  }
+
+  if (Platform.isAndroid) {
+    // Android 12+, there are restrictions on starting a foreground service.
+    //
+    // To restart the service on device reboot or unexpected problem, you need to allow below permission.
+    if (!await FlutterForegroundTask.isIgnoringBatteryOptimizations) {
+      // This function requires `android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` permission.
+      await FlutterForegroundTask.requestIgnoreBatteryOptimization();
+    }
+
+    // Use this utility only if you provide services that require long-term survival,
+    // such as exact alarm service, healthcare service, or Bluetooth communication.
+    //
+    // This utility requires the "android.permission.SCHEDULE_EXACT_ALARM" permission.
+    // Using this permission may make app distribution difficult due to Google policy.
+    if (!await FlutterForegroundTask.canScheduleExactAlarms) {
+      // When you call this function, will be gone to the settings page.
+      // So you need to explain to the user why set it.
+      await FlutterForegroundTask.openAlarmsAndRemindersSettings();
+    }
+  }
+}
+
+void _initService() {}
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -116,10 +198,22 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () async {
+          await _requestPermissions();
+          _initService();
+          _startService();
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    FlutterForegroundTask.addTaskDataCallback((data) {
+      debugPrint('Task data: $data');
+    });
   }
 }
