@@ -3,9 +3,13 @@ import 'package:flutter/widgets.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-class StorageExample extends StatelessWidget {
+class StorageExample extends StatefulWidget {
   const StorageExample({super.key});
+  @override
+  State<StorageExample> createState() => _StorageExampleState();
+}
 
+class _StorageExampleState extends State<StorageExample> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -74,7 +78,9 @@ class StorageExample extends StatelessWidget {
     }
     String text = "#${color.value.toRadixString(16).substring(2)}";
     debugPrint("addedColor: $text");
-    prefs.getStringList(history)!.add(text);
+    List<String> addedList = prefs.getStringList(history)!;
+    addedList.add(text);
+    await prefs.setStringList(history, addedList);
   }
 
   Widget colorButton({required Color color}) {
@@ -88,6 +94,7 @@ class StorageExample extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () {
           _addColor(color: color);
+          setState(() {});
         },
         child: Text(
           colorMap[color]!,
@@ -100,5 +107,6 @@ class StorageExample extends StatelessWidget {
   Future<void> _deleteAllStorage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
+    setState(() {});
   }
 }
