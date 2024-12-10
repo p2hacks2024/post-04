@@ -21,10 +21,14 @@ class MyTaskHandler extends TaskHandler {
   }
 
   @override
+  void onReceiveData(Object data) {
+    debugPrint("data received: $data");
+    serialService?.send(data.toString());
+  }
+
+  @override
   void onRepeatEvent(DateTime timestamp) {
     debugPrint(timestamp.toString());
-    print(timestamp.toIso8601String());
-    FlutterForegroundTask.sendDataToMain(timestamp.toString());
   }
 
   @override

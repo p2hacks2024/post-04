@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:epsilon_app/model/enums/arduino_message_type_enum.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:usb_serial/transaction.dart';
 import 'package:usb_serial/usb_serial.dart';
 
@@ -12,6 +13,7 @@ class SerialService {
   StreamSubscription<String>? _subscription;
   Transaction<String>? _transaction;
   UsbDevice? _device;
+  List<Function(String value)> _listeners = [];
   SerialService() {
     _getPorts();
   }
@@ -47,6 +49,23 @@ class SerialService {
     }
 
     print('getPorts() end.');
+  }
+
+  Future<void> send(String value) async {
+    if (_port == null) {
+      print('Send() _port=null return.');
+      return null;
+    }
+
+    // ArduinoMessage? message;
+    // _listeners.add((String value) {
+    //   print(value);
+    //   message = ArduinoMessage.fromMessage(value);
+    // });
+    // await _port!.write(Uint8List.fromList(value.codeUnits));
+    // while (message == null) {
+    //   await Future.delayed(Duration(milliseconds: 100));
+    // }
   }
 
   Future<bool> _connectTo(device) async {
@@ -91,9 +110,14 @@ class SerialService {
 
     // Arduinoからのデータ受信
     _subscription = _transaction!.stream.listen((String line) {
+      FlutterForegroundTask.sendDataToMain(line);
       var message = ArduinoMessage.fromMessage(line);
+      for (var value in _listeners) {
+        value(line);
+      }
       if (message is ArduinoColorMessage) {
         print(message.colorString);
+        // #TODO ここで色を保存する．
       }
       print(message.type);
     });
