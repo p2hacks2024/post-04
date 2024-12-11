@@ -1,10 +1,41 @@
 import 'dart:async';
 
 import 'package:epsilon_app/model/enums/arduino_message_type_enum.dart';
+import 'package:epsilon_app/state/serial_service_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:usb_serial/transaction.dart';
 import 'package:usb_serial/usb_serial.dart';
+
+part 'foreground_serial_service.g.dart';
+
+@riverpod
+class SerialService extends _$SerialService {
+  ForegroundSerialService? _foregroundSerialService;
+  Timer? connectAttemptTimer;
+  bool _timerAsyncLock = false;
+  @override
+  SerialServiceState build() {
+    _foregroundSerialService = ForegroundSerialService();
+    connectAttemptTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+      if(_timerAsyncLock) return;
+      _timerAsyncLock = true;
+      if(state.isConnected) {
+        timer.cancel();
+      }else{
+        var result = await _foregroundSerialService!._getPorts();
+        if(result) {
+          state = state.copyWith(isConnected: true);
+        }
+      }
+      _timerAsyncLock = false;
+    });
+    return const SerialServiceState();
+  }
+
+
+}
 
 class ForegroundSerialService {
   String _status = "Idle";
@@ -17,13 +48,15 @@ class ForegroundSerialService {
   ForegroundSerialService() {
     _getPorts();
   }
-  void _getPorts() async {
+  // こいつを実行してやれば，arduinoとの接続ができる．(手動)
+  Future<bool> _getPorts() async {
     print('getPorts() start.');
     List<UsbDevice> devices = await UsbSerial.listDevices();
 
     print('getPorts() devices=$devices.');
     if (devices.isEmpty) {
       _status = "No devices";
+      return false;
     } else {
       _status = "Searching";
     }
@@ -44,11 +77,11 @@ class ForegroundSerialService {
 
     if (!searchRet) {
       _connectTo(null);
+      return false;
     } else {
       _connectTo(searchDevice);
+      return true;
     }
-
-    print('getPorts() end.');
   }
 
   Future<void> send(String value) async {
