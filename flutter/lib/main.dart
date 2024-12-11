@@ -16,11 +16,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         // This is the theme of your application.
         //
-        // TRY THIS: Try running your application with "flutter run". You'll see
+        // TRY THIS: Try running your application with 'flutter run'. You'll see
         // the application has a purple toolbar. Then, without quitting the app,
         // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
+        // and then invoke 'hot reload' (save your changes or press the 'hot
+        // reload' button in a Flutter-supported IDE, or press 'r' if you used
         // the command line to start the app).
         //
         // Notice that the counter didn't reset back to zero; the application
@@ -47,7 +47,7 @@ class MyHomePage extends StatefulWidget {
   // This class is the configuration for the state. It holds the values (in this
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+  // always marked 'final'.
 
   final String title;
 
@@ -101,8 +101,8 @@ class _MyHomePageState extends State<MyHomePage> {
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
           //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
+          // TRY THIS: Invoke 'debug painting' (choose the 'Toggle Debug Paint'
+          // action in the IDE, or press 'p' in the console), to see the
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
