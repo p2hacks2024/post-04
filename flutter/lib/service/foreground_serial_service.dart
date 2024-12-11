@@ -4,6 +4,7 @@ import 'package:epsilon_app/model/enums/arduino_message_type_enum.dart';
 import 'package:epsilon_app/state/serial_service_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:usb_serial/transaction.dart';
 import 'package:usb_serial/usb_serial.dart';
@@ -17,7 +18,27 @@ class SerialService extends _$SerialService {
   bool _timerAsyncLock = false;
   @override
   SerialServiceState build() {
+    whenDisconnected() {
+      state = state.copyWith(isConnected: false);
+      _initTimer();
+      //#TODO isConnectedがfalseになったら，connect画面に戻った方がいい気がする
+    }
+    whenConnected() {
+      state = state.copyWith(isConnected: true);
+    }
     _foregroundSerialService = ForegroundSerialService();
+    _foregroundSerialService!.disconnectListerners.add(whenDisconnected);
+    _foregroundSerialService!.connectListerners.add(whenConnected);
+    ref.onDispose(() {
+      connectAttemptTimer?.cancel();
+    });
+
+    _initTimer();
+    
+    return const SerialServiceState();
+  }
+
+  void _initTimer() {
     connectAttemptTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       if(_timerAsyncLock) return;
       _timerAsyncLock = true;
@@ -31,23 +52,38 @@ class SerialService extends _$SerialService {
       }
       _timerAsyncLock = false;
     });
-    return const SerialServiceState();
   }
 
-
+  void setConnected(bool value) {
+    state = state.copyWith(isConnected: value);
+  }
 }
 
 class ForegroundSerialService {
-  String _status = "Idle";
   UsbPort? _port;
+
+  List<Function()> disconnectListerners = [];
+  List<Function()> connectListerners = [];
 
   StreamSubscription<String>? _subscription;
   Transaction<String>? _transaction;
   UsbDevice? _device;
   List<Function(String value)> _listeners = [];
   ForegroundSerialService() {
+    UsbSerial.usbEventStream?.listen((UsbEvent msg) async {
+      if (msg.event == UsbEvent.ACTION_USB_DETACHED) {
+        if (_device != null && msg.device == _device) {
+          disconnectListerners.forEach((action) => action());
+        }
+      } else if (msg.event == UsbEvent.ACTION_USB_ATTACHED) {
+        if( _device != null && msg.device == _device) {
+          connectListerners.forEach((action) => action());
+        }
+      }
+    });
     _getPorts();
   }
+
   // こいつを実行してやれば，arduinoとの接続ができる．(手動)
   Future<bool> _getPorts() async {
     print('getPorts() start.');
@@ -55,11 +91,8 @@ class ForegroundSerialService {
 
     print('getPorts() devices=$devices.');
     if (devices.isEmpty) {
-      _status = "No devices";
       return false;
-    } else {
-      _status = "Searching";
-    }
+    } 
 
     Iterator<UsbDevice>? deviceIterator = devices.iterator;
     UsbDevice? searchDevice = null;
@@ -121,14 +154,12 @@ class ForegroundSerialService {
 
     if (device == null) {
       _device = null;
-      _status = "Disconnected";
       print('connectTo() device=null return.');
       return true;
     }
 
     _port = await device.create();
     if (await (_port!.open()) != true) {
-      _status = "Failed to open port";
       print('connectTo() failed to open port.');
       return false;
     }
@@ -155,7 +186,6 @@ class ForegroundSerialService {
       print(message.type);
     });
 
-    _status = "Connected";
     print('connectTo() end.');
     return true;
   }
