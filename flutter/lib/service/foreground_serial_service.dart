@@ -10,7 +10,7 @@ import 'package:usb_serial/usb_serial.dart';
 
 part 'foreground_serial_service.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: false)
 class SerialService extends _$SerialService {
   ForegroundSerialService? _foregroundSerialService;
   Timer? connectAttemptTimer;

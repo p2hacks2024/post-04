@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:epsilon_app/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:epsilon_app/foreground_example.dart';
@@ -30,7 +31,7 @@ void main() async {
       allowWifiLock: true,
     ),
   );
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -158,6 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            TextButton(child: Text("測定する！"), onPressed: () => context.push('/play'))
           ],
         ),
       ),
