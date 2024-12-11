@@ -1,4 +1,4 @@
-import 'package:epsilon_app/view_model/storage_example.dart';
+import 'package:epsilon_app/view/storage_example.dart';
 import 'package:flutter/material.dart';
 
 void main() {

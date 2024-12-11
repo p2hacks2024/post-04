@@ -139,7 +139,6 @@ class _StorageExampleState extends State<StorageExample> {
       if (historyIndex == -1) {
         historyIndex = prefs.getStringList(history)!.length - 1;
       }
-      debugPrint(historyKey);
       return (jsonDecode(prefs.getStringList(history)![historyIndex])
           as Map)[historyKey];
     }
