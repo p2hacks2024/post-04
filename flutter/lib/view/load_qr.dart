@@ -8,12 +8,12 @@ class LoadQr extends StatefulWidget {
 }
 
 class _LoadQr extends State<LoadQr> {
-  String scannedData = "";
+  String scannedData = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("QRコード読み込み"),
+        title: Text('QRコード読み込み'),
       ),
       body: MobileScanner(
         controller: MobileScannerController(
@@ -22,7 +22,7 @@ class _LoadQr extends State<LoadQr> {
         onDetect: (capture) {
           setState(() {
             scannedData = capture.barcodes[0].rawValue!;
-            debugPrint("scannedData: $scannedData");
+            debugPrint('scannedData: $scannedData');
           });
         },
       ),
