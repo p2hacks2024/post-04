@@ -6,7 +6,7 @@ import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:usb_serial/transaction.dart';
 import 'package:usb_serial/usb_serial.dart';
 
-class SerialService {
+class ForegroundSerialService {
   String _status = "Idle";
   UsbPort? _port;
 
@@ -14,7 +14,7 @@ class SerialService {
   Transaction<String>? _transaction;
   UsbDevice? _device;
   List<Function(String value)> _listeners = [];
-  SerialService() {
+  ForegroundSerialService() {
     _getPorts();
   }
   void _getPorts() async {

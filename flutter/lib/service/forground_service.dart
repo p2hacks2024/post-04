@@ -1,6 +1,6 @@
 import 'dart:isolate';
 
-import 'package:epsilon_app/service/serial_service.dart';
+import 'package:epsilon_app/service/foreground_serial_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 
@@ -12,7 +12,7 @@ void startCallback() {
 
 class MyTaskHandler extends TaskHandler {
   SendPort? _sendPort;
-  SerialService? serialService;
+  ForegroundSerialService? serialService;
   int _count = 0;
   @override
   Future<void> onDestroy(DateTime timestamp) async {
@@ -34,7 +34,7 @@ class MyTaskHandler extends TaskHandler {
   @override
   Future<void> onStart(DateTime timestamp, TaskStarter starter) async {
     debugPrint("service started");
-    serialService = SerialService();
+    serialService = ForegroundSerialService();
     print("service started");
   }
 
@@ -51,7 +51,6 @@ class MyTaskHandler extends TaskHandler {
 
   @override
   void onNotificationButtonPressed(String id) {
-    debugPrint(id);
-    FlutterForegroundTask.launchApp();
+    FlutterForegroundTask.restartService();
   }
 }

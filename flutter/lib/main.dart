@@ -65,27 +65,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-Future<ServiceRequestResult> _startService() async {
-  if (await FlutterForegroundTask.isRunningService) {
-    return FlutterForegroundTask.restartService();
-  } else {
-    return FlutterForegroundTask.startService(
-      serviceId: 256,
-      notificationTitle: 'Foreground Service is running',
-      notificationText: 'Tap to return to the app',
-      notificationIcon: null,
-      notificationButtons: [
-        const NotificationButton(id: 'btn_hello', text: 'hello'),
-      ],
-      callback: (isRunning) => print('Service is running: $isRunning'),
-    );
-  }
-}
-
-Future<ServiceRequestResult> _stopService() async {
-  return FlutterForegroundTask.stopService();
-}
-
 Future<void> _requestPermissions() async {
   // Android 13+, you need to allow notification permission to display foreground service notification.
   //
@@ -199,11 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await _requestPermissions();
-          _initService();
-          _startService();
-        },
+        onPressed: () async {},
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
