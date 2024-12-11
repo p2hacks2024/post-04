@@ -74,8 +74,7 @@ class _StorageExampleState extends State<StorageExample> {
                           key: history, historyIndex: -1, historyKey: created);
                       debugPrint('$updated: $updatedData');
                       debugPrint('latestColor: $latestColor');
-                      debugPrint(
-                          'LatestCreated: $latestCreated');
+                      debugPrint('LatestCreated: $latestCreated');
                     },
                     icon: const Icon(Icons.description),
                   )
@@ -144,10 +143,12 @@ class _StorageExampleState extends State<StorageExample> {
     }
     return prefs.get(key) as String;
   }
+
   String _formatStringToTime({required DateTime time}) {
     final DateFormat formatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
     return formatter.format(time);
   }
+
   DateTime _parseTimeFromString({required String timeString}) {
     final DateFormat formatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
     //
