@@ -15,6 +15,14 @@ class DeveloperPage extends StatelessWidget {
               onPressed: () => context.push('/developer/storage_example'),
               child: const Text('ストレージ実験'),
             ),
+            TextButton(
+              onPressed: () => context.push('/developer/display_qr'),
+              child: const Text('QRコード表示'),
+            ),
+            TextButton(
+              onPressed: () => context.push('/developer/load_qr'),
+              child: const Text('QRコード読取'),
+            ),
           ],
         ),
       ),

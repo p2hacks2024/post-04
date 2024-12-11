@@ -1,5 +1,7 @@
 import 'package:epsilon_app/main.dart';
 import 'package:epsilon_app/view/developer_page.dart';
+import 'package:epsilon_app/view/display_qr.dart';
+import 'package:epsilon_app/view/load_qr.dart';
 import 'package:epsilon_app/view/splash.dart';
 import 'package:epsilon_app/view/storage_example.dart';
 import 'package:flutter/material.dart';
@@ -16,4 +18,6 @@ final router = GoRouter(navigatorKey: navigatorKey, routes: [
   GoRoute(path: '/home', builder: (context, state) => const MyHomePage(title: 'Home')),
   GoRoute(path: '/developer', builder: (context, state) => const DeveloperPage()),
   GoRoute(path: '/developer/storage_example', builder: (context, state) => const StorageExample()),
+  GoRoute(path: '/developer/display_qr', builder: (context, state) => const DisplayQr(qrData: 'HelloWorld')),
+  GoRoute(path: '/developer/load_qr', builder: (context, state) => const LoadQr(),)
 ]);
