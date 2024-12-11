@@ -20,7 +20,7 @@ class _StorageExampleState extends State<StorageExample> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _loadStorage(),
+      future: loadStorage(),
       builder: (context, snapshot) {
         if (snapshot.data == null) {
           return const CircularProgressIndicator();
@@ -53,24 +53,24 @@ class _StorageExampleState extends State<StorageExample> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      colorButton(color: Colors.red),
-                      colorButton(color: Colors.green),
-                      colorButton(color: Colors.blue)
+                      _colorButton(color: Colors.red),
+                      _colorButton(color: Colors.green),
+                      _colorButton(color: Colors.blue)
                     ],
                   ),
                   IconButton(
                     onPressed: () {
-                      _deleteAllStorage();
+                      deleteAllStorage();
                     },
                     icon: const Icon(Icons.delete),
                   ),
                   //デバッグ用ボタン
                   IconButton(
                     onPressed: () async {
-                      String updatedData = await _getData(key: updated);
-                      String latestColor = await _getData(
+                      String updatedData = await getData(key: updated);
+                      String latestColor = await getData(
                           key: history, historyIndex: -1, historyKey: color);
-                      String latestCreated = await _getData(
+                      String latestCreated = await getData(
                           key: history, historyIndex: -1, historyKey: created);
                       debugPrint('$updated: $updatedData');
                       debugPrint('latestColor: $latestColor');
@@ -87,7 +87,7 @@ class _StorageExampleState extends State<StorageExample> {
     );
   }
 
-  Widget colorButton({required Color color}) {
+  Widget _colorButton({required Color color}) {
     final Map<Color, String> colorMap = {
       Colors.red: '赤',
       Colors.blue: '青',
@@ -97,7 +97,7 @@ class _StorageExampleState extends State<StorageExample> {
       color: color,
       child: ElevatedButton(
         onPressed: () {
-          _addData(inputColor: color);
+          addData(inputColor: color);
           setState(() {});
         },
         child: Text(
@@ -108,12 +108,12 @@ class _StorageExampleState extends State<StorageExample> {
     );
   }
 
-  Future<SharedPreferences> _loadStorage() async {
+  Future<SharedPreferences> loadStorage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs;
   }
 
-  Future<void> _addData({required Color inputColor}) async {
+  Future<void> addData({required Color inputColor}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey(history)) {
       prefs.setStringList(history, <String>[]);
@@ -122,15 +122,15 @@ class _StorageExampleState extends State<StorageExample> {
     Map<String, String> addedMap = {
       color:
           '#${inputColor.value.toRadixString(16).substring(2)}', //カラーコードの先頭2桁は透明度を表すため、除外
-      created: _formatStringToTime(time: DateTime.now())
+      created: formatStringToTime(time: DateTime.now())
     };
     historyList.add(jsonEncode(addedMap));
     await prefs.setStringList(history, historyList);
-    await prefs.setString(updated, _formatStringToTime(time: DateTime.now()));
+    await prefs.setString(updated, formatStringToTime(time: DateTime.now()));
   }
 
   //historyIndexに-1を入れると、最新のデータを取得できる
-  Future<String> _getData(
+  Future<String> getData(
       {required String key, int? historyIndex, String? historyKey}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey(key)) return 'null';
@@ -144,18 +144,18 @@ class _StorageExampleState extends State<StorageExample> {
     return prefs.get(key) as String;
   }
 
-  String _formatStringToTime({required DateTime time}) {
+  String formatStringToTime({required DateTime time}) {
     final DateFormat formatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
     return formatter.format(time);
   }
 
-  DateTime _parseTimeFromString({required String timeString}) {
+  DateTime parseTimeFromString({required String timeString}) {
     final DateFormat formatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
     //
     return formatter.parse('$timeString.0');
   }
 
-  Future<void> _deleteAllStorage() async {
+  Future<void> deleteAllStorage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
     setState(() {});
