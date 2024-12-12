@@ -11,22 +11,19 @@ class StorageExample extends ConsumerWidget {
   final String updated = 'updated';
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    debugPrint('3: StorageExample.build() state: ${ref.read(storageManagerProvider.notifier).state.history}');
     ref.read(storageManagerProvider.notifier).save();
-    ref.listenManual(storageManagerProvider,(prev, next) {
-      debugPrint("更新されたゾ:${next.updated}");
-    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('ストレージデモ'),
-        
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'latestHistory: ${ref.watch(storageManagerProvider).history}\nupdated: ${ref.watch(storageManagerProvider).updated}\nfetched: ${ref.watch(storageManagerProvider).fetched}',
+              '''latestHistory: ${ref.watch(storageManagerProvider).history!.isNotEmpty ? ref.watch(storageManagerProvider).history!.last : ''}
+              updated: ${ref.watch(storageManagerProvider).updated}
+              fetched: ${ref.watch(storageManagerProvider).fetched}''',
               style: const TextStyle(fontSize: 30),
             ),
             Row(
@@ -39,9 +36,7 @@ class StorageExample extends ConsumerWidget {
             ),
             IconButton(
               onPressed: () {
-                ref
-                    .watch(storageManagerProvider.notifier)
-                    .deleteHistory();
+                ref.watch(storageManagerProvider.notifier).deleteHistory();
               },
               icon: const Icon(Icons.delete),
             ),
@@ -68,7 +63,9 @@ class StorageExample extends ConsumerWidget {
       color: color,
       child: ElevatedButton(
         onPressed: () {
-          ref.watch(storageManagerProvider.notifier).addColor(inputColor: color);
+          ref
+              .watch(storageManagerProvider.notifier)
+              .addColor(inputColor: color);
         },
         child: Text(
           colorMap[color]!,
@@ -78,20 +75,3 @@ class StorageExample extends ConsumerWidget {
     );
   }
 }
-
-        // if (true) {
-        // } else {
-        //   final storageData = ref.watch(storageManagerProvider.notifier).prefs;
-        //   String storageText = '';
-        //   for (String key in storageData.getKeys()) {
-        //     var value = storageData.get(key);
-        //     if (value is List<String>) {
-        //       String tmp = '';
-        //       for (String entry in value) {
-        //         tmp += '$entry, ';
-        //       }
-        //       value = '[$tmp]';
-        //     }
-        //     storageText += '$key: $value\n';
-        //   }
-        // }

@@ -31,7 +31,6 @@ class SharedPreferencesRepository implements ISharedPreferencesRepository {
 
   @override
   StorageState load() {
-    debugPrint('2: SharedPreferencesRepository.load() prefs: ${ref.read(sharedPreferencesProvider).getStringList('history')!}');
     SharedPreferences prefs = ref.read(sharedPreferencesProvider);
     //TODO: ここのnull関係改善する
     List<HistoryModel> history = [];
@@ -44,7 +43,6 @@ class SharedPreferencesRepository implements ISharedPreferencesRepository {
           .map((value) {
             return HistoryModel.fromJson(jsonDecode(value) as Map<String, dynamic>);
           }).toList();
-      debugPrint('2.25: SharedPreferencesRepository.load() state: $history');
     } else {
       prefs.setStringList('history', []);
     }
@@ -62,14 +60,11 @@ class SharedPreferencesRepository implements ISharedPreferencesRepository {
     if (prefs.getString('fetched')!.isNotEmpty) {
       fetched = DateTime.parse(prefs.getString('fetched')!);
     }
-    debugPrint('2.5 SharedPreferences.load() state: $history');
     return StorageState(history: history, updated: updated, fetched: fetched);
   }
 
   @override
   Future<void> save(StorageState state) async {
-    debugPrint('5: SharedPreferencesRepository.save() prefs: ${ref.read(sharedPreferencesProvider).getStringList('history')}');
-    debugPrint('6: SharedPreferencesRepository.save() state: ${state.history}');
     SharedPreferences prefs = ref.read(sharedPreferencesProvider);
     await prefs.setStringList(
         'history', state.history!.map((value) => jsonEncode(value.toJson())).toList());
@@ -79,7 +74,6 @@ class SharedPreferencesRepository implements ISharedPreferencesRepository {
         (state.fetched != null) ? state.fetched!.toIso8601String() : '';
     await prefs.setString('updated', updatedText);
     await prefs.setString('fetch', fetchedText);
-    debugPrint('7: SharedPreferencesRepository.save() prefs: ${ref.read(sharedPreferencesProvider).getStringList('history')}');
   }
 
   @override

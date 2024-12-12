@@ -16,8 +16,6 @@ class StorageManager extends _$StorageManager {
 
   @override
   StorageState build() {
-    debugPrint('1: StorageManager.build() prefs: ${ref.read(sharedPreferencesProvider).getStringList('history')}');
-    // debugPrint('StorageManager.build() state: $state');
     return ref.read(sharedPreferencesRepositoryProvider).load();
   }
 
@@ -74,7 +72,6 @@ class StorageManager extends _$StorageManager {
   }
 
   Future<void> save() async {
-    debugPrint('4: StorageManager.save() state: ${state.history}');
     ref.read(sharedPreferencesRepositoryProvider).save(state);
   }
 
