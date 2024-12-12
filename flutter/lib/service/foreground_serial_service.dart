@@ -63,14 +63,14 @@ class SerialService extends _$SerialService {
   }
 
   Future<void> start() async {
-    ArduinoMessage? result = await _foregroundSerialService?.send("RDY 0", beforeOk: () {
+    ArduinoMessage? result = await _foregroundSerialService?.send('RDY 0', beforeOk: () {
       state = state.copyWith(isConnecting: true);
     }, afterOk: () {
       state = state.copyWith(isConnecting: false);
     });
     if (result == null) return;
     if (result is ArduinoColorMessage) {
-      debugPrint("result is : type: ${result.type}, value: ${result.color.toString()}");
+      debugPrint('result is : type: ${result.type}, value: ${result.color.toString()}');
     }
     state = state.copyWith(response: result);
   }
@@ -154,12 +154,12 @@ class ForegroundSerialService {
 
     listenerFunc(String value) {
       if (isDone) return;
-      print("value$value");
-      print("trimed: ${value.trim()}");
+      print('value$value');
+      print('trimed: ${value.trim()}');
       message = ArduinoMessage.fromMessage(value.trim());
       if (message == null) return;
-      debugPrint("type: ${message!.type}");
-      if (message!.type == "OK.") {
+      debugPrint('type: ${message!.type}');
+      if (message!.type == 'OK.') {
         if (afterOk != null) {
           afterOk();
         }
@@ -182,7 +182,7 @@ class ForegroundSerialService {
   }
 
   Future<bool> _connectTo(device) async {
-    print("connect to device: $device");
+    print('connect to device: $device');
 
     if (_subscription != null) {
       _subscription!.cancel();

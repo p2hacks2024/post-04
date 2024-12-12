@@ -15,7 +15,7 @@ class ConnectedPage extends ConsumerWidget {
         context.go('/play/flash/${color.value}');
       } else {
         if (state.response!.type == ArduinoMessageType.invalid || state.response!.type == ArduinoMessageType.waitAMoment) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("メッセージが不正です")));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('メッセージが不正です')));
         }
       }
     });
@@ -27,13 +27,13 @@ class ConnectedPage extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Text("人"),
+          const Text('人'),
           ElevatedButton(
               onPressed: () async {
                 await ref.read(serialServiceProvider.notifier).start();
               },
-              child: const Text("SET")),
-          if (state.isConnecting) const Text("メッセージの送信中です"),
+              child: const Text('SET')),
+          if (state.isConnecting) const Text('メッセージの送信中です'),
         ],
       ),
     );

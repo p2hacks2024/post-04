@@ -156,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            TextButton(child: Text("測定する！"), onPressed: () => context.push('/play'))
+            TextButton(child: const Text('測定する！'), onPressed: () => context.push('/play'))
           ],
         ),
       ),

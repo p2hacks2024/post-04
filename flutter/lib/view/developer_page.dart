@@ -10,8 +10,8 @@ class DeveloperPage extends StatelessWidget {
       body: Column(
         children: [
           TextButton(
-            child: Text("usbSerial"),
-            onPressed: () => context.push("/usb_serial_example"),
+            child: Text('usbSerial'),
+            onPressed: () => context.push('/usb_serial_example'),
           ),
           TextButton(
             onPressed: () => context.push('/developer/storage_example'),

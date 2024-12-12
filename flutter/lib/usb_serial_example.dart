@@ -7,9 +7,9 @@ import 'package:usb_serial/transaction.dart';
 import 'package:usb_serial/usb_serial.dart';
 
 class UsbSerialSample extends StatefulWidget {
-  const UsbSerialSample({Key? key, required this.title}) : super(key: key);
-
   final String title;
+
+  const UsbSerialSample({Key? key, required this.title}) : super(key: key);
 
   @override
   State<UsbSerialSample> createState() => _UsbSerialSampleState();
@@ -17,7 +17,7 @@ class UsbSerialSample extends StatefulWidget {
 
 class _UsbSerialSampleState extends State<UsbSerialSample> {
   UsbPort? _port;
-  String _status = "Idle";
+  String _status = 'Idle';
   bool _init = false;
   List<Widget> _serialData = [];
   StreamSubscription<String>? _subscription;
@@ -25,10 +25,71 @@ class _UsbSerialSampleState extends State<UsbSerialSample> {
   UsbDevice? _device;
 
   final TextEditingController _controller = TextEditingController();
-  String reply = "";
+  String reply = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+          child: Column(children: <Widget>[
+        Text(_init == false ? 'No serial devices available' : 'Available Serial Ports', style: Theme.of(context).textTheme.titleLarge),
+        Text('Status: $_status\n'),
+        Text('info: ${_port.toString()}\n'),
+        ListTile(
+          title: TextField(
+            controller: _controller,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Text To Send',
+            ),
+          ),
+          trailing: ElevatedButton(
+            child: const Text('Send'),
+            onPressed: _port == null
+                ? null
+                : () async {
+                    if (_port == null) {
+                      return;
+                    }
+                    String data = _controller.text + '\r\n';
+                    await _port!.write(Uint8List.fromList(data.codeUnits));
+                    _controller.text = '';
+                  },
+          ),
+        ),
+        Text('Result Data', style: Theme.of(context).textTheme.titleLarge),
+        ..._serialData,
+      ])),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    print('dispose() start.');
+    _connectTo(null);
+    print('dispose() end.');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print('initState() start.');
+    UsbSerial.usbEventStream!.listen((UsbEvent event) {
+      _getPorts();
+    });
+
+    _getPorts();
+    _init = true;
+    setState(() {});
+    print('initState() end.');
+  }
 
   Future<bool> _connectTo(device) async {
-    print("connect to device: $device");
+    print('connect to device: $device');
     _serialData.clear();
 
     if (_subscription != null) {
@@ -49,7 +110,7 @@ class _UsbSerialSampleState extends State<UsbSerialSample> {
     if (device == null) {
       _device = null;
       setState(() {
-        _status = "Disconnected";
+        _status = 'Disconnected';
       });
       print('connectTo() device=null return.');
       return true;
@@ -58,7 +119,7 @@ class _UsbSerialSampleState extends State<UsbSerialSample> {
     _port = await device.create();
     if (await (_port!.open()) != true) {
       setState(() {
-        _status = "Failed to open port";
+        _status = 'Failed to open port';
       });
       print('connectTo() failed to open port.');
       return false;
@@ -82,7 +143,7 @@ class _UsbSerialSampleState extends State<UsbSerialSample> {
     });
 
     setState(() {
-      _status = "Connected";
+      _status = 'Connected';
     });
     print('connectTo() end.');
     return true;
@@ -94,9 +155,9 @@ class _UsbSerialSampleState extends State<UsbSerialSample> {
 
     print('getPorts() devices=$devices.');
     if (devices.isEmpty) {
-      _status = "No devices";
+      _status = 'No devices';
     } else {
-      _status = "Searching";
+      _status = 'Searching';
     }
 
     Iterator<UsbDevice>? deviceIterator = devices.iterator;
@@ -121,66 +182,5 @@ class _UsbSerialSampleState extends State<UsbSerialSample> {
 
     setState(() {});
     print('getPorts() end.');
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    print('initState() start.');
-    UsbSerial.usbEventStream!.listen((UsbEvent event) {
-      _getPorts();
-    });
-
-    _getPorts();
-    _init = true;
-    setState(() {});
-    print('initState() end.');
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    print('dispose() start.');
-    _connectTo(null);
-    print('dispose() end.');
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-          child: Column(children: <Widget>[
-        Text(_init == false ? "No serial devices available" : "Available Serial Ports", style: Theme.of(context).textTheme.titleLarge),
-        Text('Status: $_status\n'),
-        Text('info: ${_port.toString()}\n'),
-        ListTile(
-          title: TextField(
-            controller: _controller,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Text To Send',
-            ),
-          ),
-          trailing: ElevatedButton(
-            child: Text("Send"),
-            onPressed: _port == null
-                ? null
-                : () async {
-                    if (_port == null) {
-                      return;
-                    }
-                    String data = _controller.text + "\r\n";
-                    await _port!.write(Uint8List.fromList(data.codeUnits));
-                    _controller.text = "";
-                  },
-          ),
-        ),
-        Text("Result Data", style: Theme.of(context).textTheme.titleLarge),
-        ..._serialData,
-      ])),
-    );
   }
 }

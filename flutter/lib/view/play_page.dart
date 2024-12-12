@@ -24,12 +24,12 @@ class PlayPage extends StatelessWidget {
         });
         if (state.isConnected) {
           return const Center(
-            child: Text("Connecting!!"),
+            child: Text('Connecting!!'),
           );
         }
         return Center(
           child: Text(
-            "${state.isConnected}",
+            '${state.isConnected}',
             style: TextStyle(fontSize: 24),
           ),
         );
