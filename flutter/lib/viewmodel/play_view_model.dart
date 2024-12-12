@@ -17,7 +17,7 @@ class PlayViewModel extends _$PlayViewModel {
 
   Future<void> start() async {
     ArduinoMessage? result = await _foregroundSerialService?.send('RDY 0', beforeOk: () {
-      state = state.copyWith(isSending: true);
+      state = state.copyWith(isSending: true, isPressed: true);
     }, afterOk: () {
       state = state.copyWith(isSending: false);
     });

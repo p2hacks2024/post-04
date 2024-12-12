@@ -10,14 +10,8 @@ class ConnectedPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var state = ref.watch(playViewModelProvider);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (state.response == null) return;
-      if (state.response is ArduinoColorMessage) {
-        var color = (state.response as ArduinoColorMessage).color;
-        context.go('/play/flash/${color.value}');
-      } else {
-        if (state.response!.type == ArduinoMessageType.invalid || state.response!.type == ArduinoMessageType.waitAMoment) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('メッセージが不正です')));
-        }
+      if (state.isPressed && !state.isSending) {
+        context.go('/play/charge');
       }
     });
     return Scaffold(

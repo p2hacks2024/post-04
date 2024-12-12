@@ -7,6 +7,7 @@ part 'play_state.freezed.dart';
 class PlayState with _$PlayState {
   const factory PlayState({
     @Default(false) bool isSending,
+    @Default(false) bool isPressed,
     ArduinoMessage? response,
   }) = _PlayState;
 }
