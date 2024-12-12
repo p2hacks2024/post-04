@@ -10,6 +10,7 @@ class ArduinoMessage {
 
   factory ArduinoMessage.fromMessage(String message) {
     var splited = message.split(" ");
+    // typeがCLRの場合はArduinoColorMessageを返す
     if (splited[0] == "CLR") {
       return ArduinoColorMessage(message);
     }

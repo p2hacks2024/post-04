@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:epsilon_app/model/enums/arduino_message_type_enum.dart';
 import 'package:epsilon_app/state/serial_service_state.dart';
@@ -11,7 +12,7 @@ import 'package:usb_serial/usb_serial.dart';
 
 part 'foreground_serial_service.g.dart';
 
-@Riverpod(keepAlive: false)
+@Riverpod(keepAlive: true)
 class SerialService extends _$SerialService {
   ForegroundSerialService? _foregroundSerialService;
   Timer? connectAttemptTimer;
@@ -23,9 +24,11 @@ class SerialService extends _$SerialService {
       _initTimer();
       //#TODO isConnectedがfalseになったら，connect画面に戻った方がいい気がする
     }
+
     whenConnected() {
       state = state.copyWith(isConnected: true);
     }
+
     _foregroundSerialService = ForegroundSerialService();
     _foregroundSerialService!.disconnectListerners.add(whenDisconnected);
     _foregroundSerialService!.connectListerners.add(whenConnected);
@@ -34,19 +37,19 @@ class SerialService extends _$SerialService {
     });
 
     _initTimer();
-    
+
     return const SerialServiceState();
   }
 
   void _initTimer() {
     connectAttemptTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
-      if(_timerAsyncLock) return;
+      if (_timerAsyncLock) return;
       _timerAsyncLock = true;
-      if(state.isConnected) {
+      if (state.isConnected) {
         timer.cancel();
-      }else{
+      } else {
         var result = await _foregroundSerialService!._getPorts();
-        if(result) {
+        if (result) {
           state = state.copyWith(isConnected: true);
         }
       }
@@ -56,6 +59,15 @@ class SerialService extends _$SerialService {
 
   void setConnected(bool value) {
     state = state.copyWith(isConnected: value);
+  }
+
+  Future<void> start() async {
+    ArduinoMessage? result = await _foregroundSerialService?.send("RDY 0");
+    if(result == null) return;
+    if(result is ArduinoColorMessage) {
+      debugPrint("result is : type: ${result.type}, value: ${result.color.toString()}");
+    }
+    state = state.copyWith(response: result);
   }
 }
 
@@ -73,11 +85,15 @@ class ForegroundSerialService {
     UsbSerial.usbEventStream?.listen((UsbEvent msg) async {
       if (msg.event == UsbEvent.ACTION_USB_DETACHED) {
         if (_device != null && msg.device == _device) {
-          disconnectListerners.forEach((action) => action());
+          for (var action in disconnectListerners) {
+            action();
+          }
         }
       } else if (msg.event == UsbEvent.ACTION_USB_ATTACHED) {
-        if( _device != null && msg.device == _device) {
-          connectListerners.forEach((action) => action());
+        if (_device != null && msg.device == _device) {
+          for (var action in connectListerners) {
+            action();
+          }
         }
       }
     });
@@ -92,7 +108,7 @@ class ForegroundSerialService {
     print('getPorts() devices=$devices.');
     if (devices.isEmpty) {
       return false;
-    } 
+    }
 
     Iterator<UsbDevice>? deviceIterator = devices.iterator;
     UsbDevice? searchDevice = null;
@@ -117,21 +133,31 @@ class ForegroundSerialService {
     }
   }
 
-  Future<void> send(String value) async {
+  Future<ArduinoMessage?> send(String value) async {
     if (_port == null) {
       print('Send() _port=null return.');
       return null;
     }
+    value = '$value\r\n';
+    ArduinoMessage? message;
+    bool isDone = false;
 
-    // ArduinoMessage? message;
-    // _listeners.add((String value) {
-    //   print(value);
-    //   message = ArduinoMessage.fromMessage(value);
-    // });
-    // await _port!.write(Uint8List.fromList(value.codeUnits));
-    // while (message == null) {
-    //   await Future.delayed(Duration(milliseconds: 100));
-    // }
+    liste(String value) {
+      if (isDone) return;
+      print("value$value");
+      print("trimed: ${value.trim()}");
+      message = ArduinoMessage.fromMessage(value.trim());
+      isDone = true;
+    }
+
+    _listeners.add(liste);
+    //await _port!.write(Uint8List.fromList(value.codeUnits));
+    await _port!.write(Uint8List.fromList(ascii.encode(value)));
+    // #TODO ここをいい感じにする．
+    while (isDone == false) {
+      await Future.delayed(const Duration(milliseconds: 10));
+    }
+    return message;
   }
 
   Future<bool> _connectTo(device) async {

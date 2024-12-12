@@ -1,4 +1,6 @@
+import 'package:epsilon_app/service/foreground_serial_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ConnectedPage extends StatelessWidget {
   @override
@@ -12,7 +14,15 @@ class ConnectedPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
       const Text("人"),
-      ElevatedButton(onPressed: () {}, child: const Text("SET"))
+      Consumer(
+        builder: (context, ref, _) {
+          return ElevatedButton(
+            onPressed: () async {
+              await 
+                  ref.read(serialServiceProvider.notifier).start();
+            }, child: const Text("SET"));
+        }
+      )
         ],
       ),
     );
