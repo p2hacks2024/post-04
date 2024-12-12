@@ -1,6 +1,6 @@
 import 'package:epsilon_app/model/enums/arduino_message_type_enum.dart';
 import 'package:epsilon_app/state/play_state.dart';
-import 'package:epsilon_app/viewmodel/play_view_model.dart';
+import 'package:epsilon_app/view_model/play_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
