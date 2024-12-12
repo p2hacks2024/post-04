@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:epsilon_app/model/const/device_id.dart';
 import 'package:epsilon_app/model/enums/arduino_message_type_enum.dart';
 import 'package:epsilon_app/state/serial_service_state.dart';
 import 'package:flutter/foundation.dart';
@@ -122,7 +123,7 @@ class ForegroundSerialService {
       searchDevice = deviceIterator.current;
 
       // ArduinoのVendorIdだよ。
-      if (searchDevice.vid == 9025) {
+      if (searchDevice.vid == DeviceId.arduinoVendorId) {
         searchRet = true;
         break;
       }

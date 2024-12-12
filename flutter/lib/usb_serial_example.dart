@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:epsilon_app/model/const/device_id.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:usb_serial/transaction.dart';
@@ -106,7 +107,7 @@ class _UsbSerialSampleState extends State<UsbSerialSample> {
       searchDevice = deviceIterator.current;
 
       // ArduinoのVendorIdだよ。
-      if (searchDevice.vid == 9025) {
+      if (searchDevice.vid == DeviceId.arduinoVendorId) {
         searchRet = true;
         break;
       }
