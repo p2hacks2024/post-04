@@ -7,7 +7,7 @@ part 'storage_state.freezed.dart';
 @freezed
 class StorageState with _$StorageState {
   const factory StorageState({
-    @Default([]) List<HistoryModel> history,
+    List<HistoryModel>? history,
     DateTime? updated,
     DateTime? fetched,
   }) = _StorageState;

@@ -4,15 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //まだfetchedは実装していない
 class StorageExample extends ConsumerWidget {
-  StorageExample({super.key});
-  Future<String>? storageText;
+  const StorageExample({super.key});
   final String history = 'history';
   final String color = 'color';
   final String created = 'created';
   final String updated = 'updated';
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    debugPrint("build");
+    debugPrint('3: StorageExample.build() state: ${ref.read(storageManagerProvider.notifier).state.history}');
     ref.read(storageManagerProvider.notifier).save();
     ref.listenManual(storageManagerProvider,(prev, next) {
       debugPrint("更新されたゾ:${next.updated}");
@@ -26,12 +25,8 @@ class StorageExample extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // Text(
-            //   'storage\n${ref.watch(storageManagerProvider.notifier).getAllDataString()}',
-            //   style: const TextStyle(fontSize: 30),
-            // ),
             Text(
-              'history: ${ref.watch(storageManagerProvider).history}\nupdated: ${ref.watch(storageManagerProvider).updated}\nfetched: ${ref.watch(storageManagerProvider).fetched}',
+              'latestHistory: ${ref.watch(storageManagerProvider).history}\nupdated: ${ref.watch(storageManagerProvider).updated}\nfetched: ${ref.watch(storageManagerProvider).fetched}',
               style: const TextStyle(fontSize: 30),
             ),
             Row(

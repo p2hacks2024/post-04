@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$StorageState {
-  List<HistoryModel> get history => throw _privateConstructorUsedError;
+  List<HistoryModel>? get history => throw _privateConstructorUsedError;
   DateTime? get updated => throw _privateConstructorUsedError;
   DateTime? get fetched => throw _privateConstructorUsedError;
 
@@ -31,7 +31,8 @@ abstract class $StorageStateCopyWith<$Res> {
           StorageState value, $Res Function(StorageState) then) =
       _$StorageStateCopyWithImpl<$Res, StorageState>;
   @useResult
-  $Res call({List<HistoryModel> history, DateTime? updated, DateTime? fetched});
+  $Res call(
+      {List<HistoryModel>? history, DateTime? updated, DateTime? fetched});
 }
 
 /// @nodoc
@@ -47,15 +48,15 @@ class _$StorageStateCopyWithImpl<$Res, $Val extends StorageState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? history = null,
+    Object? history = freezed,
     Object? updated = freezed,
     Object? fetched = freezed,
   }) {
     return _then(_value.copyWith(
-      history: null == history
+      history: freezed == history
           ? _value.history
           : history // ignore: cast_nullable_to_non_nullable
-              as List<HistoryModel>,
+              as List<HistoryModel>?,
       updated: freezed == updated
           ? _value.updated
           : updated // ignore: cast_nullable_to_non_nullable
@@ -76,7 +77,8 @@ abstract class _$$StorageStateImplCopyWith<$Res>
       __$$StorageStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<HistoryModel> history, DateTime? updated, DateTime? fetched});
+  $Res call(
+      {List<HistoryModel>? history, DateTime? updated, DateTime? fetched});
 }
 
 /// @nodoc
@@ -90,15 +92,15 @@ class __$$StorageStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? history = null,
+    Object? history = freezed,
     Object? updated = freezed,
     Object? fetched = freezed,
   }) {
     return _then(_$StorageStateImpl(
-      history: null == history
+      history: freezed == history
           ? _value._history
           : history // ignore: cast_nullable_to_non_nullable
-              as List<HistoryModel>,
+              as List<HistoryModel>?,
       updated: freezed == updated
           ? _value.updated
           : updated // ignore: cast_nullable_to_non_nullable
@@ -115,16 +117,17 @@ class __$$StorageStateImplCopyWithImpl<$Res>
 
 class _$StorageStateImpl implements _StorageState {
   const _$StorageStateImpl(
-      {final List<HistoryModel> history = const [], this.updated, this.fetched})
+      {final List<HistoryModel>? history, this.updated, this.fetched})
       : _history = history;
 
-  final List<HistoryModel> _history;
+  final List<HistoryModel>? _history;
   @override
-  @JsonKey()
-  List<HistoryModel> get history {
+  List<HistoryModel>? get history {
+    final value = _history;
+    if (value == null) return null;
     if (_history is EqualUnmodifiableListView) return _history;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_history);
+    return EqualUnmodifiableListView(value);
   }
 
   @override
@@ -160,12 +163,12 @@ class _$StorageStateImpl implements _StorageState {
 
 abstract class _StorageState implements StorageState {
   const factory _StorageState(
-      {final List<HistoryModel> history,
+      {final List<HistoryModel>? history,
       final DateTime? updated,
       final DateTime? fetched}) = _$StorageStateImpl;
 
   @override
-  List<HistoryModel> get history;
+  List<HistoryModel>? get history;
   @override
   DateTime? get updated;
   @override
