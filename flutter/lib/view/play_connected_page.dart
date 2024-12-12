@@ -11,7 +11,7 @@ class ConnectedPage extends ConsumerWidget {
     var state = ref.watch(playViewModelProvider);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (state.isPressed && !state.isSending) {
-        context.go('/play/charge');
+        context.pushReplacement('/play/charge');
       }
     });
     return Scaffold(
