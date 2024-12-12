@@ -37,5 +37,4 @@ class ArduinoMessageType {
   static const String ok = 'OK.';
   static const String invalid = 'INV';
   static const String waitAMoment = 'WAM';
-  static const String ready = 'PWR';
 }
