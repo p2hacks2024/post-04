@@ -24,6 +24,6 @@ class Splash extends StatelessWidget {
   }
 
   Future<void> init() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
   }
 }

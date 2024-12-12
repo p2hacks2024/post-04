@@ -11,30 +11,29 @@ class PlayPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Play'),
       ),
-      body: Consumer(
-        builder: (context, ref, _) {
-          SerialServiceState state = ref.watch(serialServiceProvider);
-          ref.listenManual(serialServiceProvider, (prev, next) {
-            if(next.isConnected) {
-              WidgetsBinding.instance.addPostFrameCallback((duration) async {
-                await Future.delayed(const Duration(seconds: 2));
-                if(context.mounted) {
-                  context.pushReplacement('/play/connected');
-                }
-              });
-            }
-          });
-          if(state.isConnected) {
-            return const Center(child: Text("Connecting!!"),);
+      body: Consumer(builder: (context, ref, _) {
+        SerialServiceState state = ref.watch(serialServiceProvider);
+        ref.listenManual(serialServiceProvider, (prev, next) {
+          if (next.isConnected) {
+            WidgetsBinding.instance.addPostFrameCallback((duration) async {
+              if (context.mounted) {
+                context.pushReplacement('/play/connected');
+              }
+            });
           }
-          return Center(
-            child: Text(
-              "${state.isConnected}",
-              style: TextStyle(fontSize: 24),
-            ),
+        });
+        if (state.isConnected) {
+          return const Center(
+            child: Text("Connecting!!"),
           );
         }
-      ),
-  );
+        return Center(
+          child: Text(
+            "${state.isConnected}",
+            style: TextStyle(fontSize: 24),
+          ),
+        );
+      }),
+    );
   }
 }
