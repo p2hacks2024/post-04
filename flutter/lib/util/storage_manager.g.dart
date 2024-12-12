@@ -6,12 +6,12 @@ part of 'storage_manager.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$storageManagerHash() => r'9a54dcea4810329572c5f22c47c077b020e0bf95';
+String _$storageManagerHash() => r'0529fab9f1de17c50bb67be76bc1d3480f9e577f';
 
 /// See also [StorageManager].
 @ProviderFor(StorageManager)
 final storageManagerProvider =
-    AutoDisposeAsyncNotifierProvider<StorageManager, StorageState>.internal(
+    AutoDisposeNotifierProvider<StorageManager, StorageState>.internal(
   StorageManager.new,
   name: r'storageManagerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,6 +21,6 @@ final storageManagerProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$StorageManager = AutoDisposeAsyncNotifier<StorageState>;
+typedef _$StorageManager = AutoDisposeNotifier<StorageState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

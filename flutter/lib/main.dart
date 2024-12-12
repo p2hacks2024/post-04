@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   var prefs = await SharedPreferences.getInstance();
   runApp(
     ProviderScope(

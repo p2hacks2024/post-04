@@ -1,9 +1,10 @@
 import 'dart:convert';
 
+import 'package:epsilon_app/model/history_model.dart';
+import 'package:epsilon_app/repository/repository.dart';
 import 'package:epsilon_app/state/storage_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,72 +19,76 @@ class StorageManager extends _$StorageManager {
   final String updated = 'updated';
 
   @override
-  Future<StorageState> build() async {
-    return this;
+  StorageState build() {
+    return ref.read(sharedPreferencesRepositoryProvider).load();
   }
 
-  Future<void> addData({required Color inputColor}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (!prefs.containsKey(history)) {
-      prefs.setStringList(history, <String>[]);
-    }
-    List<String> historyList = prefs.getStringList(history)!;
-    Map<String, String> addedMap = {
-      color:
-          '#${inputColor.value.toRadixString(16).substring(2)}', //カラーコードの先頭2桁は透明度を表すため、除外
-      created: formatStringToTime(time: DateTime.now())
-    };
-    historyList.add(jsonEncode(addedMap));
-    await prefs.setStringList(history, historyList);
-    await prefs.setString(updated, formatStringToTime(time: DateTime.now()));
+  void addColor({required Color inputColor}) {
+    debugPrint('state(addData): $state');
+    List<HistoryModel> historyList = [...state.history];
+    historyList.add(
+      HistoryModel(
+          colorCode: '#${inputColor.value.toRadixString(16).substring(2)}',
+          created: DateTime.now(),
+        ),
+    );
+    state = state.copyWith(
+      history: historyList,
+      updated: DateTime.now(),
+    );
+    debugPrint('after state(addData): $state');
   }
 
   //historyIndexに-1を入れると、最新のデータを取得できる
-  Future<String> getData(
-      {required String key, int? historyIndex, String? historyKey}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (!prefs.containsKey(key)) return 'null';
+  dynamic getData(
+      {required String key, int? historyIndex, String? historyKey}) {
+        debugPrint('state(getData): $state');
     if (key == history && historyIndex != null) {
       if (historyIndex == -1) {
-        historyIndex = prefs.getStringList(history)!.length - 1;
+        historyIndex = state.history.length - 1;
       }
-      return (jsonDecode(prefs.getStringList(history)![historyIndex])
-          as Map)[historyKey];
+      return (state.history[historyIndex]);
     }
-    return prefs.get(key) as String;
+    //TODO: 改良する
+    switch (key) {
+      case 'updated': 
+        return state.updated;
+      case 'fetched':
+        return state.fetched;
+    }
   }
 
-  Future<String> getAllDataString() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String text = '';
-    for (String key in prefs.getKeys()) {
-      var value = prefs.get(key);
-      if (value is List<String>) {
-        String tmp = '';
-        for (String entry in value) {
-          tmp += '$entry, ';
-        }
-        value = '[${tmp.substring(0, tmp.length-2)}]';
-      }
-      text += '$key: $value\n';
+  String getAllDataString() {
+    debugPrint('state(getAllDataString): $state');
+    String text = 'history: [';
+    for (int i=0; i<state.history.length; i++) {
+      HistoryModel entry = state.history[i];
+      text += '\n  {';
+      text += '\n   color: ${entry.colorCode},\n';
+      final createdText = entry.created.toIso8601String();
+      text += '   created: $createdText\n';
+      text += '  }';
+      if (i==state.history.length-1) break;
+      text += ',';
     }
-    debugPrint(text);
+    // text = text.substring(0, text.length-1);
+    text += '\n],';
+    text += '\nupdated: ${state.updated},';
+    text += '\nfetched: ${state.fetched}';
+    debugPrint('storageText: $text');
     return text;
   }
 
-  String formatStringToTime({required DateTime time}) {
-    final DateFormat formatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    return formatter.format(time);
+  Future<void> save() async {
+    debugPrint('state(save): $state');
+    ref.read(sharedPreferencesRepositoryProvider).save(state);
   }
 
-  DateTime parseTimeFromString({required String timeString}) {
-    final DateFormat formatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    //
-    return formatter.parse('$timeString.0');
-  }
-
-  Future<void> deleteAllStorage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
+  void deleteHistory() {
+    debugPrint('state(deleteAllStorage): $state');
+    state = state.copyWith(
+      history: [],
+      updated: DateTime.now()
+    );
   }
 }

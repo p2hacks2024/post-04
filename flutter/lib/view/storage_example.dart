@@ -12,59 +12,54 @@ class StorageExample extends ConsumerWidget {
   final String updated = 'updated';
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    storageText = ref.watch(storageManagerProvider.notifier).getAllDataString();
-    return Builder(
-      builder: (context) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('ストレージデモ'),
-          ),
-          body: Center(
-            child: Column(
+    debugPrint("build");
+    ref.read(storageManagerProvider.notifier).save();
+    ref.listenManual(storageManagerProvider,(prev, next) {
+      debugPrint("更新されたゾ:${next.updated}");
+    });
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('ストレージデモ'),
+        
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            // Text(
+            //   'storage\n${ref.watch(storageManagerProvider.notifier).getAllDataString()}',
+            //   style: const TextStyle(fontSize: 30),
+            // ),
+            Text(
+              'history: ${ref.watch(storageManagerProvider).history}\nupdated: ${ref.watch(storageManagerProvider).updated}\nfetched: ${ref.watch(storageManagerProvider).fetched}',
+              style: const TextStyle(fontSize: 30),
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(
-                  'storage\n$storageText',
-                  style: const TextStyle(fontSize: 30),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    _colorButton(ref: ref, color: Colors.red),
-                    _colorButton(ref: ref, color: Colors.green),
-                    _colorButton(ref: ref, color: Colors.blue)
-                  ],
-                ),
-                IconButton(
-                  onPressed: () {
-                    ref
-                        .read(storageManagerProvider.notifier)
-                        .deleteAllStorage();
-                  },
-                  icon: const Icon(Icons.delete),
-                ),
-                //デバッグ用ボタン
-                IconButton(
-                  onPressed: () async {
-                    StorageManager storageManager =
-                        ref.read(storageManagerProvider.notifier);
-                    String updatedData =
-                        await storageManager.getData(key: updated);
-                    String latestColor = await storageManager.getData(
-                        key: history, historyIndex: -1, historyKey: color);
-                    String latestCreated = await storageManager.getData(
-                        key: history, historyIndex: -1, historyKey: created);
-                    debugPrint('$updated: $updatedData');
-                    debugPrint('latestColor: $latestColor');
-                    debugPrint('LatestCreated: $latestCreated');
-                  },
-                  icon: const Icon(Icons.description),
-                )
+                _colorButton(ref: ref, color: Colors.red),
+                _colorButton(ref: ref, color: Colors.green),
+                _colorButton(ref: ref, color: Colors.blue)
               ],
             ),
-          ),
-        );
-      },
+            IconButton(
+              onPressed: () {
+                ref
+                    .watch(storageManagerProvider.notifier)
+                    .deleteHistory();
+              },
+              icon: const Icon(Icons.delete),
+            ),
+            //デバッグ用ボタン
+            IconButton(
+              onPressed: () async {
+                debugPrint('${ref.watch(storageManagerProvider)}');
+              },
+              icon: const Icon(Icons.description),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -78,7 +73,7 @@ class StorageExample extends ConsumerWidget {
       color: color,
       child: ElevatedButton(
         onPressed: () {
-          ref.watch(storageManagerProvider.notifier).addData(inputColor: color);
+          ref.watch(storageManagerProvider.notifier).addColor(inputColor: color);
         },
         child: Text(
           colorMap[color]!,

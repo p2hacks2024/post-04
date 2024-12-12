@@ -22,23 +22,23 @@ final sharedPreferencesProvider =
 );
 
 typedef SharedPreferencesRef = AutoDisposeProviderRef<SharedPreferences>;
-String _$useSharedPreferencesRepositoryHash() =>
-    r'7ba62706dddc114e8b089ced85498baed4671602';
+String _$sharedPreferencesRepositoryHash() =>
+    r'9d09fc89c0ff52213369d9ae0ef1d21a281edeb5';
 
-/// See also [useSharedPreferencesRepository].
-@ProviderFor(useSharedPreferencesRepository)
-final useSharedPreferencesRepositoryProvider =
+/// See also [sharedPreferencesRepository].
+@ProviderFor(sharedPreferencesRepository)
+final sharedPreferencesRepositoryProvider =
     Provider<SharedPreferencesRepository>.internal(
-  useSharedPreferencesRepository,
-  name: r'useSharedPreferencesRepositoryProvider',
+  sharedPreferencesRepository,
+  name: r'sharedPreferencesRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$useSharedPreferencesRepositoryHash,
+      : _$sharedPreferencesRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef UseSharedPreferencesRepositoryRef
+typedef SharedPreferencesRepositoryRef
     = ProviderRef<SharedPreferencesRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

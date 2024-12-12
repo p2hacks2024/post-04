@@ -10,5 +10,6 @@ class HistoryModel with _$HistoryModel {
     required DateTime created,
   }) = _HistoryModel;
 
-  factory HistoryModel.fromJson(Map<String, dynamic> json) => _$HistoryModelFromJson(json);
+  factory HistoryModel.fromJson(Map<String, dynamic> json) =>
+      _$HistoryModelFromJson(json);
 }
