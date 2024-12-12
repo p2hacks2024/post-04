@@ -1,27 +1,24 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-class StorageManager extends ChangeNotifier {
-  static final StorageManager _instance = StorageManager._internal();
-  late final SharedPreferences prefs;
+part 'storage_manager.g.dart';
+
+@riverpod
+class StorageManager extends _$StorageManager {
   final String history = 'history';
   final String color = 'color';
   final String created = 'created';
   final String updated = 'updated';
 
-  StorageManager._internal();
-
-  factory StorageManager() {
-    return _instance;
-  }
-
-  Future<void> init() async {
-    prefs = await SharedPreferences.getInstance();
-    notifyListeners();
+  @override
+  Future<StorageManager> build() async {
+    return this;
   }
 
   Future<void> addData({required Color inputColor}) async {
@@ -55,6 +52,24 @@ class StorageManager extends ChangeNotifier {
     return prefs.get(key) as String;
   }
 
+  Future<String> getAllDataString() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String text = '';
+    for (String key in prefs.getKeys()) {
+      var value = prefs.get(key);
+      if (value is List<String>) {
+        String tmp = '';
+        for (String entry in value) {
+          tmp += '$entry, ';
+        }
+        value = '[${tmp.substring(0, tmp.length-2)}]';
+      }
+      text += '$key: $value\n';
+    }
+    debugPrint(text);
+    return text;
+  }
+
   String formatStringToTime({required DateTime time}) {
     final DateFormat formatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
     return formatter.format(time);
@@ -69,6 +84,5 @@ class StorageManager extends ChangeNotifier {
   Future<void> deleteAllStorage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
-    notifyListeners();
   }
 }

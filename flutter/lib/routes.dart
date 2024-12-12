@@ -15,5 +15,5 @@ final router = GoRouter(navigatorKey: navigatorKey, routes: [
       }),
   GoRoute(path: '/home', builder: (context, state) => const MyHomePage(title: 'Home')),
   GoRoute(path: '/developer', builder: (context, state) => const DeveloperPage()),
-  GoRoute(path: '/developer/storage_example', builder: (context, state) => const StorageExample()),
+  GoRoute(path: '/developer/storage_example', builder: (context, state) => StorageExample()),
 ]);
