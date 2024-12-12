@@ -12,8 +12,12 @@ class DeveloperPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextButton(
+              child: const Text('usbSerial'),
+              onPressed: () => context.push('/usb_serial_example'),
+            ),
+            TextButton(
               onPressed: () => context.push('/developer/storage_example'),
-              child: const Text('ストレージ実験'),
+              child: const Text('ストレージデモ'),
             ),
           ],
         ),
