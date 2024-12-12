@@ -73,7 +73,7 @@ class SharedPreferencesRepository implements ISharedPreferencesRepository {
     final fetchedText =
         (state.fetched != null) ? state.fetched!.toIso8601String() : '';
     await prefs.setString('updated', updatedText);
-    await prefs.setString('fetch', fetchedText);
+    await prefs.setString('fetched', fetchedText);
   }
 
   @override
