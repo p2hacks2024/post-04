@@ -152,7 +152,7 @@ class ForegroundSerialService {
     ArduinoMessage? message;
     bool isDone = false;
 
-    liste(String value) {
+    listenerFunc(String value) {
       if (isDone) return;
       print("value$value");
       print("trimed: ${value.trim()}");
@@ -171,7 +171,7 @@ class ForegroundSerialService {
       isDone = true;
     }
 
-    _listeners.add(liste);
+    _listeners.add(listenerFunc);
     //await _port!.write(Uint8List.fromList(value.codeUnits));
     await _port!.write(Uint8List.fromList(ascii.encode(value)));
     // #TODO ここをいい感じにする．
