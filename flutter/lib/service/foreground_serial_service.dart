@@ -62,7 +62,7 @@ class SerialService extends _$SerialService {
   }
 
   Future<void> start() async {
-    ArduinoMessage? result = await _foregroundSerialService?.send("RDY 0", untilOk: () {
+    ArduinoMessage? result = await _foregroundSerialService?.send("RDY 0", beforeOk: () {
       state = state.copyWith(isConnecting: true);
     }, afterOk: () {
       state = state.copyWith(isConnecting: false);
@@ -137,14 +137,14 @@ class ForegroundSerialService {
     }
   }
 
-  Future<ArduinoMessage?> send(String value, {Function()? untilOk, Function()? afterOk}) async {
+  Future<ArduinoMessage?> send(String value, {Function()? beforeOk, Function()? afterOk}) async {
     if (_port == null) {
       print('Send() _port=null return.');
       return null;
     }
 
-    if (untilOk != null) {
-      untilOk();
+    if (beforeOk != null) {
+      beforeOk();
     }
 
     value = '$value\r\n';
