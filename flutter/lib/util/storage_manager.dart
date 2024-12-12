@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:epsilon_app/state/storage_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +18,7 @@ class StorageManager extends _$StorageManager {
   final String updated = 'updated';
 
   @override
-  Future<StorageManager> build() async {
+  Future<StorageState> build() async {
     return this;
   }
 
