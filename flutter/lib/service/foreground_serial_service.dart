@@ -6,22 +6,21 @@ import 'package:epsilon_app/model/enums/arduino_message_type_enum.dart';
 import 'package:epsilon_app/state/serial_service_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:usb_serial/transaction.dart';
 import 'package:usb_serial/usb_serial.dart';
 
 part 'foreground_serial_service.g.dart';
 
-@Riverpod(keepAlive: false)
+@Riverpod(keepAlive: true)
 class SerialService extends _$SerialService {
-  ForegroundSerialService? _foregroundSerialService;
+  ForegroundSerialService? foregroundSerialService;
   Timer? connectAttemptTimer;
   bool _timerAsyncLock = false;
   @override
   SerialServiceState build() {
     whenDisconnected() {
-      state = state.copyWith(isConnected: false);
+      state = state.copyWith(isConnected: false, isArduinoReady: false);
       _initTimer();
       //#TODO isConnectedがfalseになったら，connect画面に戻った方がいい気がする
     }
@@ -30,9 +29,15 @@ class SerialService extends _$SerialService {
       state = state.copyWith(isConnected: true);
     }
 
-    _foregroundSerialService = ForegroundSerialService();
-    _foregroundSerialService!.disconnectListerners.add(whenDisconnected);
-    _foregroundSerialService!.connectListerners.add(whenConnected);
+    whenArduinoReady() {
+      state = state.copyWith(isArduinoReady: true);
+    }
+
+    foregroundSerialService = ForegroundSerialService();
+    foregroundSerialService!.disconnectListerners.add(whenDisconnected);
+    foregroundSerialService!.connectListerners.add(whenConnected);
+    foregroundSerialService!.arduinoReadyListeners.add(whenArduinoReady);
+
     ref.onDispose(() {
       connectAttemptTimer?.cancel();
     });
@@ -49,7 +54,8 @@ class SerialService extends _$SerialService {
       if (state.isConnected) {
         timer.cancel();
       } else {
-        var result = await _foregroundSerialService!._getPorts();
+        var result = await foregroundSerialService!._getPorts();
+        debugPrint("isConnected: $result");
         if (result) {
           state = state.copyWith(isConnected: true);
         }
@@ -62,17 +68,8 @@ class SerialService extends _$SerialService {
     state = state.copyWith(isConnected: value);
   }
 
-  Future<void> start() async {
-    ArduinoMessage? result = await _foregroundSerialService?.send('RDY 0', beforeOk: () {
-      state = state.copyWith(isConnecting: true);
-    }, afterOk: () {
-      state = state.copyWith(isConnecting: false);
-    });
-    if (result == null) return;
-    if (result is ArduinoColorMessage) {
-      debugPrint('result is : type: ${result.type}, value: ${result.color.toString()}');
-    }
-    state = state.copyWith(response: result);
+  void setArduinoReady(bool value) {
+    state = state.copyWith(isArduinoReady: value);
   }
 }
 
@@ -81,6 +78,7 @@ class ForegroundSerialService {
 
   List<Function()> disconnectListerners = [];
   List<Function()> connectListerners = [];
+  List<Function()> arduinoReadyListeners = [];
 
   StreamSubscription<String>? _subscription;
   Transaction<String>? _transaction;
@@ -102,7 +100,6 @@ class ForegroundSerialService {
         }
       }
     });
-    _getPorts();
   }
 
   // こいつを実行してやれば，arduinoとの接続ができる．(手動)
@@ -154,8 +151,6 @@ class ForegroundSerialService {
 
     listenerFunc(String value) {
       if (isDone) return;
-      print('value$value');
-      print('trimed: ${value.trim()}');
       message = ArduinoMessage.fromMessage(value.trim());
       if (message == null) return;
       debugPrint('type: ${message!.type}');
@@ -222,15 +217,23 @@ class ForegroundSerialService {
     // Arduinoからのデータ受信
     _subscription = _transaction!.stream.listen((String line) {
       FlutterForegroundTask.sendDataToMain(line);
+      debugPrint("from Arduino:$line");
       var message = ArduinoMessage.fromMessage(line);
+      //if (message.type == ArduinoMessageType.ready) {
+      if (message.type.compareTo(ArduinoMessageType.ready) == 0) {
+        for (var value in arduinoReadyListeners) {
+          value();
+        }
+      } else {
+        debugPrint("falsedesu");
+      }
       for (var value in _listeners) {
         value(line);
       }
-      if (message is ArduinoColorMessage) {
-        print(message.colorString);
-        // #TODO ここで色を保存する．
-      }
-      print(message.type);
+      //if (message is ArduinoColorMessage) {
+      //  print(message.colorString);
+      //  // #TODO ここで色を保存する．
+      //}
     });
 
     print('connectTo() end.');

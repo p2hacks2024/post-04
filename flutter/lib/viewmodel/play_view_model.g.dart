@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'foreground_serial_service.dart';
+part of 'play_view_model.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$serialServiceHash() => r'd02e20f425782e78ebc813af70726c0f01aee3e0';
+String _$playViewModelHash() => r'7dd00aac2c3d2ae202134e8c45af35d8f76290e6';
 
-/// See also [SerialService].
-@ProviderFor(SerialService)
-final serialServiceProvider =
-    NotifierProvider<SerialService, SerialServiceState>.internal(
-  SerialService.new,
-  name: r'serialServiceProvider',
+/// See also [PlayViewModel].
+@ProviderFor(PlayViewModel)
+final playViewModelProvider =
+    AutoDisposeNotifierProvider<PlayViewModel, PlayState>.internal(
+  PlayViewModel.new,
+  name: r'playViewModelProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$serialServiceHash,
+      : _$playViewModelHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$SerialService = Notifier<SerialServiceState>;
+typedef _$PlayViewModel = AutoDisposeNotifier<PlayState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -16,10 +16,11 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$SerialServiceState {
-  bool get isConnected => throw _privateConstructorUsedError;
+// Arduinoが接続された(readyではない)
+  bool get isConnected =>
+      throw _privateConstructorUsedError; // ArduinoからPWR 0の信号を受け取ってら
+  bool get isArduinoReady => throw _privateConstructorUsedError;
   bool get isSet => throw _privateConstructorUsedError;
-  bool get isConnecting => throw _privateConstructorUsedError;
-  ArduinoMessage? get response => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SerialServiceStateCopyWith<SerialServiceState> get copyWith =>
@@ -32,11 +33,7 @@ abstract class $SerialServiceStateCopyWith<$Res> {
           SerialServiceState value, $Res Function(SerialServiceState) then) =
       _$SerialServiceStateCopyWithImpl<$Res, SerialServiceState>;
   @useResult
-  $Res call(
-      {bool isConnected,
-      bool isSet,
-      bool isConnecting,
-      ArduinoMessage? response});
+  $Res call({bool isConnected, bool isArduinoReady, bool isSet});
 }
 
 /// @nodoc
@@ -53,27 +50,22 @@ class _$SerialServiceStateCopyWithImpl<$Res, $Val extends SerialServiceState>
   @override
   $Res call({
     Object? isConnected = null,
+    Object? isArduinoReady = null,
     Object? isSet = null,
-    Object? isConnecting = null,
-    Object? response = freezed,
   }) {
     return _then(_value.copyWith(
       isConnected: null == isConnected
           ? _value.isConnected
           : isConnected // ignore: cast_nullable_to_non_nullable
               as bool,
+      isArduinoReady: null == isArduinoReady
+          ? _value.isArduinoReady
+          : isArduinoReady // ignore: cast_nullable_to_non_nullable
+              as bool,
       isSet: null == isSet
           ? _value.isSet
           : isSet // ignore: cast_nullable_to_non_nullable
               as bool,
-      isConnecting: null == isConnecting
-          ? _value.isConnecting
-          : isConnecting // ignore: cast_nullable_to_non_nullable
-              as bool,
-      response: freezed == response
-          ? _value.response
-          : response // ignore: cast_nullable_to_non_nullable
-              as ArduinoMessage?,
     ) as $Val);
   }
 }
@@ -86,11 +78,7 @@ abstract class _$$SerialerviceStateImplCopyWith<$Res>
       __$$SerialerviceStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {bool isConnected,
-      bool isSet,
-      bool isConnecting,
-      ArduinoMessage? response});
+  $Res call({bool isConnected, bool isArduinoReady, bool isSet});
 }
 
 /// @nodoc
@@ -105,27 +93,22 @@ class __$$SerialerviceStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isConnected = null,
+    Object? isArduinoReady = null,
     Object? isSet = null,
-    Object? isConnecting = null,
-    Object? response = freezed,
   }) {
     return _then(_$SerialerviceStateImpl(
       isConnected: null == isConnected
           ? _value.isConnected
           : isConnected // ignore: cast_nullable_to_non_nullable
               as bool,
+      isArduinoReady: null == isArduinoReady
+          ? _value.isArduinoReady
+          : isArduinoReady // ignore: cast_nullable_to_non_nullable
+              as bool,
       isSet: null == isSet
           ? _value.isSet
           : isSet // ignore: cast_nullable_to_non_nullable
               as bool,
-      isConnecting: null == isConnecting
-          ? _value.isConnecting
-          : isConnecting // ignore: cast_nullable_to_non_nullable
-              as bool,
-      response: freezed == response
-          ? _value.response
-          : response // ignore: cast_nullable_to_non_nullable
-              as ArduinoMessage?,
     ));
   }
 }
@@ -135,25 +118,24 @@ class __$$SerialerviceStateImplCopyWithImpl<$Res>
 class _$SerialerviceStateImpl implements _SerialerviceState {
   const _$SerialerviceStateImpl(
       {this.isConnected = false,
-      this.isSet = false,
-      this.isConnecting = false,
-      this.response});
+      this.isArduinoReady = false,
+      this.isSet = false});
 
+// Arduinoが接続された(readyではない)
   @override
   @JsonKey()
   final bool isConnected;
+// ArduinoからPWR 0の信号を受け取ってら
+  @override
+  @JsonKey()
+  final bool isArduinoReady;
   @override
   @JsonKey()
   final bool isSet;
-  @override
-  @JsonKey()
-  final bool isConnecting;
-  @override
-  final ArduinoMessage? response;
 
   @override
   String toString() {
-    return 'SerialServiceState(isConnected: $isConnected, isSet: $isSet, isConnecting: $isConnecting, response: $response)';
+    return 'SerialServiceState(isConnected: $isConnected, isArduinoReady: $isArduinoReady, isSet: $isSet)';
   }
 
   @override
@@ -163,16 +145,14 @@ class _$SerialerviceStateImpl implements _SerialerviceState {
             other is _$SerialerviceStateImpl &&
             (identical(other.isConnected, isConnected) ||
                 other.isConnected == isConnected) &&
-            (identical(other.isSet, isSet) || other.isSet == isSet) &&
-            (identical(other.isConnecting, isConnecting) ||
-                other.isConnecting == isConnecting) &&
-            (identical(other.response, response) ||
-                other.response == response));
+            (identical(other.isArduinoReady, isArduinoReady) ||
+                other.isArduinoReady == isArduinoReady) &&
+            (identical(other.isSet, isSet) || other.isSet == isSet));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, isConnected, isSet, isConnecting, response);
+      Object.hash(runtimeType, isConnected, isArduinoReady, isSet);
 
   @JsonKey(ignore: true)
   @override
@@ -185,18 +165,15 @@ class _$SerialerviceStateImpl implements _SerialerviceState {
 abstract class _SerialerviceState implements SerialServiceState {
   const factory _SerialerviceState(
       {final bool isConnected,
-      final bool isSet,
-      final bool isConnecting,
-      final ArduinoMessage? response}) = _$SerialerviceStateImpl;
+      final bool isArduinoReady,
+      final bool isSet}) = _$SerialerviceStateImpl;
 
-  @override
+  @override // Arduinoが接続された(readyではない)
   bool get isConnected;
+  @override // ArduinoからPWR 0の信号を受け取ってら
+  bool get isArduinoReady;
   @override
   bool get isSet;
-  @override
-  bool get isConnecting;
-  @override
-  ArduinoMessage? get response;
   @override
   @JsonKey(ignore: true)
   _$$SerialerviceStateImplCopyWith<_$SerialerviceStateImpl> get copyWith =>

@@ -6,9 +6,10 @@ part 'serial_service_state.freezed.dart';
 @freezed
 class SerialServiceState with _$SerialServiceState {
   const factory SerialServiceState({
-    @Default(false)bool isConnected,
-    @Default(false)bool isSet,
-    @Default(false)bool isConnecting,
-    ArduinoMessage? response,
+    // Arduinoが接続された(readyではない)
+    @Default(false) bool isConnected,
+    // ArduinoからPWR 0の信号を受け取ってら
+    @Default(false) bool isArduinoReady,
+    @Default(false) bool isSet,
   }) = _SerialerviceState;
 }

@@ -1,3 +1,3 @@
 class DeviceId {
-  static const String arduinoVendorId = '9025';
+  static const int arduinoVendorId = 9025;
 }
