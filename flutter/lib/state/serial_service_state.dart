@@ -8,6 +8,7 @@ class SerialServiceState with _$SerialServiceState {
   const factory SerialServiceState({
     @Default(false)bool isConnected,
     @Default(false)bool isSet,
+    @Default(false)bool isConnecting,
     ArduinoMessage? response,
   }) = _SerialerviceState;
 }

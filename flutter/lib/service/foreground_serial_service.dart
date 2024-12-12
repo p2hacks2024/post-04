@@ -12,7 +12,7 @@ import 'package:usb_serial/usb_serial.dart';
 
 part 'foreground_serial_service.g.dart';
 
-@Riverpod(keepAlive: true)
+@Riverpod(keepAlive: false)
 class SerialService extends _$SerialService {
   ForegroundSerialService? _foregroundSerialService;
   Timer? connectAttemptTimer;
@@ -62,9 +62,13 @@ class SerialService extends _$SerialService {
   }
 
   Future<void> start() async {
-    ArduinoMessage? result = await _foregroundSerialService?.send("RDY 0");
-    if(result == null) return;
-    if(result is ArduinoColorMessage) {
+    ArduinoMessage? result = await _foregroundSerialService?.send("RDY 0", untilOk: () {
+      state = state.copyWith(isConnecting: true);
+    }, afterOk: () {
+      state = state.copyWith(isConnecting: false);
+    });
+    if (result == null) return;
+    if (result is ArduinoColorMessage) {
       debugPrint("result is : type: ${result.type}, value: ${result.color.toString()}");
     }
     state = state.copyWith(response: result);
@@ -133,11 +137,16 @@ class ForegroundSerialService {
     }
   }
 
-  Future<ArduinoMessage?> send(String value) async {
+  Future<ArduinoMessage?> send(String value, {Function()? untilOk, Function()? afterOk}) async {
     if (_port == null) {
       print('Send() _port=null return.');
       return null;
     }
+
+    if (untilOk != null) {
+      untilOk();
+    }
+
     value = '$value\r\n';
     ArduinoMessage? message;
     bool isDone = false;
@@ -147,6 +156,17 @@ class ForegroundSerialService {
       print("value$value");
       print("trimed: ${value.trim()}");
       message = ArduinoMessage.fromMessage(value.trim());
+      if (message == null) return;
+      debugPrint("type: ${message!.type}");
+      if (message!.type == "OK.") {
+        if (afterOk != null) {
+          afterOk();
+        }
+        return;
+      }
+      if (afterOk != null) {
+        afterOk();
+      }
       isDone = true;
     }
 
