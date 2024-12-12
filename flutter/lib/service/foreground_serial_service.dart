@@ -50,7 +50,7 @@ class SerialService extends _$SerialService {
         timer.cancel();
       } else {
         var result = await foregroundSerialService!._getPorts();
-        debugPrint("isConnected: $result");
+        debugPrint('isConnected: $result');
         if (result) {
           state = state.copyWith(isConnected: true);
         }
@@ -207,7 +207,7 @@ class ForegroundSerialService {
     // Arduinoからのデータ受信
     _subscription = _transaction!.stream.listen((String line) {
       FlutterForegroundTask.sendDataToMain(line);
-      debugPrint("from Arduino:$line");
+      debugPrint('from Arduino:$line');
       var message = ArduinoMessage.fromMessage(line);
       for (var value in _listeners) {
         value(line);
