@@ -9,11 +9,6 @@ part 'storage_manager.g.dart';
 
 @riverpod
 class StorageManager extends _$StorageManager {
-  final String history = 'history';
-  final String color = 'color';
-  final String created = 'created';
-  final String updated = 'updated';
-
   @override
   StorageState build() {
     return ref.read(sharedPreferencesRepositoryProvider).load();
@@ -23,20 +18,21 @@ class StorageManager extends _$StorageManager {
     List<HistoryModel> historyList = [...state.history ?? []];
     historyList.add(
       HistoryModel(
-          colorCode: '#${inputColor.value.toRadixString(16).substring(2)}',
+          colorCode: inputColor.value.toRadixString(16),
           created: DateTime.now(),
         ),
     );
     state = state.copyWith(
       history: historyList,
       updated: DateTime.now(),
+      fetched: DateTime.now()
     );
   }
 
   //historyIndexに-1を入れると、最新のデータを取得できる
   dynamic getData(
       {required String key, int? historyIndex, String? historyKey}) {
-    if (key == history && historyIndex != null) {
+    if (key == 'history' && historyIndex != null) {
       if (historyIndex == -1) {
         historyIndex = state.history!.length - 1;
       }

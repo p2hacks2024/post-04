@@ -5,10 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 //まだfetchedは実装していない
 class StorageExample extends ConsumerWidget {
   const StorageExample({super.key});
-  final String history = 'history';
-  final String color = 'color';
-  final String created = 'created';
-  final String updated = 'updated';
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.read(storageManagerProvider.notifier).save();
