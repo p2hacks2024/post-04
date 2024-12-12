@@ -20,7 +20,7 @@ class _PlayPageState extends State<PlayPage> {
       ),
       body: Consumer(builder: (context, ref, _) {
         SerialServiceState state = ref.watch(serialServiceProvider);
-        if (state.isArduinoReady) {
+        if (state.isConnected) {
           WidgetsBinding.instance.addPostFrameCallback((duration) async {
             await Future.delayed(const Duration(seconds: 1));
             if (context.mounted) {
@@ -28,14 +28,14 @@ class _PlayPageState extends State<PlayPage> {
             }
           });
         }
-        if (state.isArduinoReady) {
+        if (state.isConnected) {
           return const Center(
             child: Text('Connecting!!'),
           );
         }
         return Center(
           child: Text(
-            '${state.isArduinoReady}',
+            '${state.isConnected}',
             style: const TextStyle(fontSize: 24),
           ),
         );

@@ -20,7 +20,7 @@ class SerialService extends _$SerialService {
   @override
   SerialServiceState build() {
     whenDisconnected() {
-      state = state.copyWith(isConnected: false, isArduinoReady: false);
+      state = state.copyWith(isConnected: false);
       _initTimer();
       //#TODO isConnectedがfalseになったら，connect画面に戻った方がいい気がする
     }
@@ -29,14 +29,9 @@ class SerialService extends _$SerialService {
       state = state.copyWith(isConnected: true);
     }
 
-    whenArduinoReady() {
-      state = state.copyWith(isArduinoReady: true);
-    }
-
     foregroundSerialService = ForegroundSerialService();
     foregroundSerialService!.disconnectListerners.add(whenDisconnected);
     foregroundSerialService!.connectListerners.add(whenConnected);
-    foregroundSerialService!.arduinoReadyListeners.add(whenArduinoReady);
 
     ref.onDispose(() {
       connectAttemptTimer?.cancel();
@@ -48,7 +43,7 @@ class SerialService extends _$SerialService {
   }
 
   void _initTimer() {
-    connectAttemptTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+    connectAttemptTimer = Timer.periodic(const Duration(seconds: 1), (timer) async {
       if (_timerAsyncLock) return;
       _timerAsyncLock = true;
       if (state.isConnected) {
@@ -67,10 +62,6 @@ class SerialService extends _$SerialService {
   void setConnected(bool value) {
     state = state.copyWith(isConnected: value);
   }
-
-  void setArduinoReady(bool value) {
-    state = state.copyWith(isArduinoReady: value);
-  }
 }
 
 class ForegroundSerialService {
@@ -78,7 +69,6 @@ class ForegroundSerialService {
 
   List<Function()> disconnectListerners = [];
   List<Function()> connectListerners = [];
-  List<Function()> arduinoReadyListeners = [];
 
   StreamSubscription<String>? _subscription;
   Transaction<String>? _transaction;
@@ -219,14 +209,6 @@ class ForegroundSerialService {
       FlutterForegroundTask.sendDataToMain(line);
       debugPrint("from Arduino:$line");
       var message = ArduinoMessage.fromMessage(line);
-      //if (message.type == ArduinoMessageType.ready) {
-      if (message.type.compareTo(ArduinoMessageType.ready) == 0) {
-        for (var value in arduinoReadyListeners) {
-          value();
-        }
-      } else {
-        debugPrint("falsedesu");
-      }
       for (var value in _listeners) {
         value(line);
       }

@@ -6,7 +6,7 @@ part of 'foreground_serial_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$serialServiceHash() => r'd02e20f425782e78ebc813af70726c0f01aee3e0';
+String _$serialServiceHash() => r'ca6edf5a45c629c4bf2d1b7a924a1e39a8f52b08';
 
 /// See also [SerialService].
 @ProviderFor(SerialService)
