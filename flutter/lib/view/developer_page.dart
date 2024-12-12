@@ -7,16 +7,17 @@ class DeveloperPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton(
-              onPressed: () => context.push('/developer/storage_example'),
-              child: const Text('ストレージ実験'),
-            ),
-          ],
-        ),
+      body: Column(
+        children: [
+          TextButton(
+            child: Text('usbSerial'),
+            onPressed: () => context.push('/usb_serial_example'),
+          ),
+          TextButton(
+            onPressed: () => context.push('/developer/storage_example'),
+            child: const Text('ストレージ実験'),
+          ),
+        ],
       ),
     );
   }
