@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:epsilon_app/repository/repository.dart';
+import 'package:epsilon_app/repository/shared_preferences.dart';
 import 'package:epsilon_app/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

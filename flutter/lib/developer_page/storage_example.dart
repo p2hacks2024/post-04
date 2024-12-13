@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:epsilon_app/util/storage_manager.dart';
+import 'package:epsilon_app/repository/storage_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //まだfetchedは実装していない
