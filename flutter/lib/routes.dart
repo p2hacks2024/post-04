@@ -21,7 +21,7 @@ final router = GoRouter(navigatorKey: navigatorKey, routes: [
         return const Splash();
       }),
   GoRoute(path: '/home', builder: (context, state) => const MyHomePage(title: 'Home')),
-  GoRoute(path: '/play', builder: (context, state) => PlayPage()),
+  GoRoute(path: '/play', builder: (context, state) => const PlayPage()),
   GoRoute(path: '/play/connected', builder: (context, state) => ConnectedPage()),
   GoRoute(path: '/play/charge', builder: (context, state) => const ChargePage()),
   GoRoute(
