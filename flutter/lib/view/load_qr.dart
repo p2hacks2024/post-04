@@ -1,29 +1,24 @@
+import 'package:epsilon_app/view_model/play_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-class LoadQr extends StatefulWidget {
+class LoadQr extends ConsumerWidget {
   const LoadQr({super.key});
   @override
-  State<LoadQr> createState() => _LoadQr();
-}
-
-class _LoadQr extends State<LoadQr> {
-  String scannedData = '';
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('QRコード読み込み'),
+        title: const Text('QRコード読み込み'),
       ),
       body: MobileScanner(
         controller: MobileScannerController(
           detectionSpeed: DetectionSpeed.noDuplicates,
         ),
         onDetect: (capture) {
-          setState(() {
-            scannedData = capture.barcodes[0].rawValue!;
-            debugPrint('scannedData: $scannedData');
-          });
+          ref.read(playViewModelProvider.notifier).setColor(Color(int.parse(capture.barcodes[0].rawValue!, radix: 16)));
+          debugPrint('LoadQr detected color: ${Color(int.parse(capture.barcodes[0].rawValue!, radix: 16))}');
+          debugPrint('LoadQr after PlayState: ${ref.watch(playViewModelProvider)}');
         },
       ),
     );

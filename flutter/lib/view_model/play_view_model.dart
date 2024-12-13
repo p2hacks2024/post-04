@@ -27,4 +27,8 @@ class PlayViewModel extends _$PlayViewModel {
     }
     state = state.copyWith(response: result);
   }
+
+  void setColor(Color color) {
+    state = state.copyWith(color: color);
+  }
 }
