@@ -15,24 +15,23 @@ SharedPreferences sharedPreferences(ref) {
 }
 
 @Riverpod(keepAlive: true)
-SharedPreferencesRepository sharedPreferencesRepository(ref) {
-  return SharedPreferencesRepository(ref);
+PrefsRepository prefsRepository(ref) {
+  return PrefsRepository(ref);
 }
 
-abstract class ISharedPreferencesRepository {
+abstract class IPrefsRepository {
   StorageState load();
   Future<void> save(StorageState state);
   void clearHistory();
 }
 
-class SharedPreferencesRepository implements ISharedPreferencesRepository {
+class PrefsRepository implements IPrefsRepository {
   Ref ref;
-  SharedPreferencesRepository(this.ref);
+  PrefsRepository(this.ref);
 
   @override
   StorageState load() {
     SharedPreferences prefs = ref.read(sharedPreferencesProvider);
-    //TODO: ここのnull関係改善する
     List<HistoryModel> history = [];
     if (prefs.containsKey('history')) {
       if (ref.read(sharedPreferencesProvider).getStringList('history')!.isNotEmpty) {

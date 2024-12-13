@@ -11,7 +11,7 @@ part 'storage_manager.g.dart';
 class StorageManager extends _$StorageManager {
   @override
   StorageState build() {
-    return ref.read(sharedPreferencesRepositoryProvider).load();
+    return ref.read(prefsRepositoryProvider).load();
   }
 
   void addColor({required Color inputColor}) {
@@ -30,7 +30,7 @@ class StorageManager extends _$StorageManager {
   }
 
   Future<void> save() async {
-    ref.read(sharedPreferencesRepositoryProvider).save(state);
+    ref.read(prefsRepositoryProvider).save(state);
   }
 
   void deleteHistory() {
