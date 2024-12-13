@@ -22,7 +22,7 @@ PrefsRepository prefsRepository(ref) {
 abstract class IPrefsRepository {
   StorageState load();
   Future<void> save(StorageState state);
-  void clearHistory();
+  void clear();
 }
 
 class PrefsRepository implements IPrefsRepository {
@@ -45,21 +45,7 @@ class PrefsRepository implements IPrefsRepository {
     } else {
       prefs.setStringList('history', []);
     }
-    if (!prefs.containsKey('updated')) {
-      prefs.setString('updated', '');
-    }
-    if (!prefs.containsKey('fetched')) {
-      prefs.setString('fetched', '');
-    }
-    DateTime? updated;
-    DateTime? fetched;
-    if (prefs.getString('updated')!.isNotEmpty) {
-      updated = DateTime.parse(prefs.getString('updated')!);
-    }
-    if (prefs.getString('fetched')!.isNotEmpty) {
-      fetched = DateTime.parse(prefs.getString('fetched')!);
-    }
-    return StorageState(history: history, updated: updated, fetched: fetched);
+    return StorageState(history: history);
   }
 
   @override
@@ -67,16 +53,10 @@ class PrefsRepository implements IPrefsRepository {
     SharedPreferences prefs = ref.read(sharedPreferencesProvider);
     await prefs.setStringList(
         'history', state.history!.map((value) => jsonEncode(value.toJson())).toList());
-    final updatedText =
-        (state.updated != null) ? state.updated!.toIso8601String() : '';
-    final fetchedText =
-        (state.fetched != null) ? state.fetched!.toIso8601String() : '';
-    await prefs.setString('updated', updatedText);
-    await prefs.setString('fetched', fetchedText);
   }
 
   @override
-  void clearHistory() {
+  void clear() {
     SharedPreferences prefs = ref.read(sharedPreferencesProvider);
     prefs.setStringList('history', []);
   }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:epsilon_app/repository/storage_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-//まだfetchedは実装していない
 class StorageExample extends ConsumerWidget {
   const StorageExample({super.key});
   @override
@@ -17,9 +16,7 @@ class StorageExample extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              '''latestHistory: ${ref.watch(storageManagerProvider).history!.isNotEmpty ? ref.watch(storageManagerProvider).history!.last : ''}
-              updated: ${ref.watch(storageManagerProvider).updated}
-              fetched: ${ref.watch(storageManagerProvider).fetched}''',
+              'latestHistory: ${ref.watch(storageManagerProvider).history!.isNotEmpty ? ref.watch(storageManagerProvider).history!.last : ''}',
               style: const TextStyle(fontSize: 30),
             ),
             Row(
@@ -32,7 +29,7 @@ class StorageExample extends ConsumerWidget {
             ),
             IconButton(
               onPressed: () {
-                ref.watch(storageManagerProvider.notifier).deleteHistory();
+                ref.watch(storageManagerProvider.notifier).clear();
               },
               icon: const Icon(Icons.delete),
             ),

@@ -24,8 +24,6 @@ class StorageManager extends _$StorageManager {
     );
     state = state.copyWith(
       history: historyList,
-      updated: DateTime.now(),
-      fetched: DateTime.now()
     );
   }
 
@@ -33,10 +31,9 @@ class StorageManager extends _$StorageManager {
     ref.read(prefsRepositoryProvider).save(state);
   }
 
-  void deleteHistory() {
+  void clear() {
     state = state.copyWith(
       history: [],
-      updated: DateTime.now()
     );
   }
 }
