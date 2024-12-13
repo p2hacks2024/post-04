@@ -64,22 +64,22 @@ class _$SerialServiceStateCopyWithImpl<$Res, $Val extends SerialServiceState>
 }
 
 /// @nodoc
-abstract class _$$SerialerviceStateImplCopyWith<$Res>
+abstract class _$$SerialServiceStateImplCopyWith<$Res>
     implements $SerialServiceStateCopyWith<$Res> {
-  factory _$$SerialerviceStateImplCopyWith(_$SerialerviceStateImpl value,
-          $Res Function(_$SerialerviceStateImpl) then) =
-      __$$SerialerviceStateImplCopyWithImpl<$Res>;
+  factory _$$SerialServiceStateImplCopyWith(_$SerialServiceStateImpl value,
+          $Res Function(_$SerialServiceStateImpl) then) =
+      __$$SerialServiceStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({bool isConnected, bool isSet});
 }
 
 /// @nodoc
-class __$$SerialerviceStateImplCopyWithImpl<$Res>
-    extends _$SerialServiceStateCopyWithImpl<$Res, _$SerialerviceStateImpl>
-    implements _$$SerialerviceStateImplCopyWith<$Res> {
-  __$$SerialerviceStateImplCopyWithImpl(_$SerialerviceStateImpl _value,
-      $Res Function(_$SerialerviceStateImpl) _then)
+class __$$SerialServiceStateImplCopyWithImpl<$Res>
+    extends _$SerialServiceStateCopyWithImpl<$Res, _$SerialServiceStateImpl>
+    implements _$$SerialServiceStateImplCopyWith<$Res> {
+  __$$SerialServiceStateImplCopyWithImpl(_$SerialServiceStateImpl _value,
+      $Res Function(_$SerialServiceStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -88,7 +88,7 @@ class __$$SerialerviceStateImplCopyWithImpl<$Res>
     Object? isConnected = null,
     Object? isSet = null,
   }) {
-    return _then(_$SerialerviceStateImpl(
+    return _then(_$SerialServiceStateImpl(
       isConnected: null == isConnected
           ? _value.isConnected
           : isConnected // ignore: cast_nullable_to_non_nullable
@@ -103,8 +103,9 @@ class __$$SerialerviceStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SerialerviceStateImpl implements _SerialerviceState {
-  const _$SerialerviceStateImpl({this.isConnected = false, this.isSet = false});
+class _$SerialServiceStateImpl implements _SerialServiceState {
+  const _$SerialServiceStateImpl(
+      {this.isConnected = false, this.isSet = false});
 
 // Arduinoが接続された(readyではない)
   @override
@@ -123,7 +124,7 @@ class _$SerialerviceStateImpl implements _SerialerviceState {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SerialerviceStateImpl &&
+            other is _$SerialServiceStateImpl &&
             (identical(other.isConnected, isConnected) ||
                 other.isConnected == isConnected) &&
             (identical(other.isSet, isSet) || other.isSet == isSet));
@@ -135,14 +136,14 @@ class _$SerialerviceStateImpl implements _SerialerviceState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SerialerviceStateImplCopyWith<_$SerialerviceStateImpl> get copyWith =>
-      __$$SerialerviceStateImplCopyWithImpl<_$SerialerviceStateImpl>(
+  _$$SerialServiceStateImplCopyWith<_$SerialServiceStateImpl> get copyWith =>
+      __$$SerialServiceStateImplCopyWithImpl<_$SerialServiceStateImpl>(
           this, _$identity);
 }
 
-abstract class _SerialerviceState implements SerialServiceState {
-  const factory _SerialerviceState({final bool isConnected, final bool isSet}) =
-      _$SerialerviceStateImpl;
+abstract class _SerialServiceState implements SerialServiceState {
+  const factory _SerialServiceState(
+      {final bool isConnected, final bool isSet}) = _$SerialServiceStateImpl;
 
   @override // Arduinoが接続された(readyではない)
   bool get isConnected;
@@ -150,6 +151,6 @@ abstract class _SerialerviceState implements SerialServiceState {
   bool get isSet;
   @override
   @JsonKey(ignore: true)
-  _$$SerialerviceStateImplCopyWith<_$SerialerviceStateImpl> get copyWith =>
+  _$$SerialServiceStateImplCopyWith<_$SerialServiceStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
