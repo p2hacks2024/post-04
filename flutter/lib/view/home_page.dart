@@ -50,9 +50,8 @@ class Home extends StatelessWidget {
   Widget _homeIconButton(IconData icon, {Color? color, EdgeInsetsGeometry? padding}) {
     return IconButton(
       onPressed: () {},
-      highlightColor: null,
-      splashColor: null,
-      hoverColor: null,
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
       icon: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(40)),
@@ -88,19 +87,61 @@ class ColorCircle extends StatefulWidget {
   State<ColorCircle> createState() => _ColorCircleState();
 }
 
-class _ColorCircleState extends State<ColorCircle> {
+class _ColorCircleState extends State<ColorCircle> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+
+  bool _isFront = true;
+  bool _isAnimating = false;
+  bool _isReversed = false;
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    _animation = Tween(begin: 0.0, end: pi).animate(_animationController)
+      ..addListener(() {
+        debugPrint(_animationController.value.toString());
+        if ((0.6 > _animationController.value && _animationController.value > 0.5) && !_isReversed) {
+          _isFront = !_isFront;
+          _isReversed = true;
+        } else if (_animationController.value == 1 || _animationController.value == 0) {
+          _isAnimating = false;
+        }
+        setState(() {});
+      });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _toggleFront() {
+    if (!_isAnimating) {
+      setState(() {
+        _isAnimating = true;
+        _isReversed = false;
+      });
+      if (_isFront) {
+        _animationController.forward();
+      } else {
+        _animationController.reverse();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Transform(
-      //transform: Matrix4.identity()..rotateY(pi),
-      transform: Matrix4.identity()..rotateY(0.0),
-      child: Container(
+    return IconButton(
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      icon: Container(
         height: 304,
         width: 304,
         decoration: BoxDecoration(
-            color: widget.color ?? const Color.fromARGB(255, 161, 161, 161),
+            color: Colors.black,
             borderRadius: const BorderRadius.all(Radius.circular(280)),
-            border: Border.all(color: Colors.black, width: 12),
             boxShadow: widget.color == null
                 ? []
                 : [
@@ -110,14 +151,53 @@ class _ColorCircleState extends State<ColorCircle> {
                       blurRadius: 40,
                     ),
                   ]),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Center(
-              child: widget.color == null
-                  ? const Text("No Color", style: TextStyle(color: Colors.black, fontSize: 20))
-                  : const SizedBox.shrink()),
+        child: Transform(
+          transform: Matrix4.rotationY(_animation.value),
+          alignment: Alignment.center,
+          child: Container(
+            decoration: BoxDecoration(
+              color: _isFront ? (widget.color ?? const Color.fromARGB(255, 161, 161, 161)) : Colors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(280)),
+              border: Border.all(color: Colors.black, width: 12),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Center(
+                  child: _isFront
+                      ? (widget.color == null
+                          ? const Text("No Color", style: TextStyle(color: Colors.black, fontSize: 20))
+                          : const SizedBox.shrink())
+                      : Transform(
+                          alignment: Alignment.center,
+                          transform: Matrix4.rotationY(pi),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  color: widget.color,
+                                  borderRadius: const BorderRadius.all(Radius.circular(100)),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                widget.color == null ? "No Color" : '#${widget.color!.value.toRadixString(16).toUpperCase()}',
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        )),
+            ),
+          ),
         ),
       ),
+      onPressed: () {
+        _toggleFront();
+      },
     );
   }
 }
