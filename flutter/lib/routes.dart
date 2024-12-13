@@ -2,12 +2,14 @@ import 'package:epsilon_app/main.dart';
 import 'package:epsilon_app/usb_serial_example.dart';
 import 'package:epsilon_app/view/developer_page.dart';
 import 'package:epsilon_app/view/home_page.dart';
+import 'package:epsilon_app/developer_page/usb_serial_example.dart';
+import 'package:epsilon_app/developer_page/developer_page.dart';
 import 'package:epsilon_app/view/play_charge_page.dart';
 import 'package:epsilon_app/view/play_connected_page.dart';
 import 'package:epsilon_app/view/play_flash_page.dart';
 import 'package:epsilon_app/view/play_page.dart';
 import 'package:epsilon_app/view/splash.dart';
-import 'package:epsilon_app/view/storage_example.dart';
+import 'package:epsilon_app/developer_page/storage_example.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
