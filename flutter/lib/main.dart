@@ -1,20 +1,24 @@
 import 'dart:io';
+import 'package:epsilon_app/repository/shared_preferences.dart';
 import 'package:epsilon_app/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   FlutterForegroundTask.initCommunicationPort();
+  var prefs = await SharedPreferences.getInstance();
 
   FlutterForegroundTask.init(
     androidNotificationOptions: AndroidNotificationOptions(
       channelId: 'foreground_service',
       channelName: 'Foreground Service Notification',
-      channelDescription: 'This notification appears when the foreground service is running.',
+      channelDescription:
+          'This notification appears when the foreground service is running.',
     ),
     iosNotificationOptions: const IOSNotificationOptions(
       showNotification: false,
@@ -28,7 +32,14 @@ void main() async {
       allowWifiLock: true,
     ),
   );
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(
+    ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

@@ -9,7 +9,7 @@ import 'package:usb_serial/usb_serial.dart';
 class UsbSerialSample extends StatefulWidget {
   final String title;
 
-  const UsbSerialSample({Key? key, required this.title}) : super(key: key);
+  const UsbSerialSample({super.key, required this.title});
 
   @override
   State<UsbSerialSample> createState() => _UsbSerialSampleState();
@@ -47,7 +47,6 @@ class _UsbSerialSampleState extends State<UsbSerialSample> {
             ),
           ),
           trailing: ElevatedButton(
-            child: const Text('Send'),
             onPressed: _port == null
                 ? null
                 : () async {
@@ -58,6 +57,7 @@ class _UsbSerialSampleState extends State<UsbSerialSample> {
                     await _port!.write(Uint8List.fromList(data.codeUnits));
                     _controller.text = '';
                   },
+            child: const Text('Send'),
           ),
         ),
         Text('Result Data', style: Theme.of(context).textTheme.titleLarge),
