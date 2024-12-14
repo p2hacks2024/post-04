@@ -1,6 +1,4 @@
 import 'package:epsilon_app/main.dart';
-import 'package:epsilon_app/usb_serial_example.dart';
-import 'package:epsilon_app/view/developer_page.dart';
 import 'package:epsilon_app/view/home_page.dart';
 import 'package:epsilon_app/developer_page/usb_serial_example.dart';
 import 'package:epsilon_app/developer_page/developer_page.dart';
