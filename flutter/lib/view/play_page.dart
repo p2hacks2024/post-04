@@ -8,7 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class PlayPage extends StatefulWidget {
-  const PlayPage({super.key});
+  final bool isColorShare;
+  const PlayPage({super.key, required this.isColorShare});
 
   @override
   State<PlayPage> createState() => _PlayPageState();
@@ -25,7 +26,12 @@ class _PlayPageState extends State<PlayPage> {
           WidgetsBinding.instance.addPostFrameCallback((duration) async {
             await Future.delayed(const Duration(seconds: 1));
             if (context.mounted) {
-              context.pushReplacement('/play/connected');
+              debugPrint("isColorShare: ${widget.isColorShare}");
+              if (!widget.isColorShare) {
+                context.pushReplacement('/play/connected');
+              } else {
+                context.pushReplacement('/qr/load');
+              }
             }
           });
         }

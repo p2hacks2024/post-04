@@ -32,7 +32,9 @@ class Home extends StatelessWidget {
               // figmaだと，少し右にずらしてるけど，何も調整しない方が真ん中だ
               _homeIconButton(
                 Icons.send_to_mobile,
-                onPressed: () {},
+                onPressed: () {
+                  context.push('/qr');
+                },
                 color: color,
               ),
               const SizedBox(
@@ -43,7 +45,7 @@ class Home extends StatelessWidget {
                 child: _homeIconButton(
                   Icons.tungsten,
                   onPressed: () {
-                    context.push('/play');
+                    context.push('/play/play/false');
                   },
                   color: color,
                 ),
@@ -106,7 +108,8 @@ class ColorCircle extends StatefulWidget {
   State<ColorCircle> createState() => _ColorCircleState();
 }
 
-class _ColorCircleState extends State<ColorCircle> with SingleTickerProviderStateMixin {
+class _ColorCircleState extends State<ColorCircle>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
 
@@ -116,13 +119,17 @@ class _ColorCircleState extends State<ColorCircle> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    _animationController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _animation = Tween(begin: 0.0, end: pi).animate(_animationController)
       ..addListener(() {
-        if ((0.6 > _animationController.value && _animationController.value > 0.5) && !_isReversed) {
+        if ((0.6 > _animationController.value &&
+                _animationController.value > 0.5) &&
+            !_isReversed) {
           _isFront = !_isFront;
           _isReversed = true;
-        } else if (_animationController.value == 1 || _animationController.value == 0) {
+        } else if (_animationController.value == 1 ||
+            _animationController.value == 0) {
           _isAnimating = false;
         }
         setState(() {});
@@ -174,7 +181,9 @@ class _ColorCircleState extends State<ColorCircle> with SingleTickerProviderStat
           alignment: Alignment.center,
           child: Container(
             decoration: BoxDecoration(
-              color: _isFront ? (widget.color ?? const Color.fromARGB(255, 161, 161, 161)) : Colors.white,
+              color: _isFront
+                  ? (widget.color ?? const Color.fromARGB(255, 161, 161, 161))
+                  : Colors.white,
               borderRadius: const BorderRadius.all(Radius.circular(280)),
               border: Border.all(color: Colors.black, width: 12),
             ),
@@ -183,7 +192,9 @@ class _ColorCircleState extends State<ColorCircle> with SingleTickerProviderStat
               child: Center(
                   child: _isFront
                       ? (widget.color == null
-                          ? const Text("No Color", style: TextStyle(color: Colors.black, fontSize: 20))
+                          ? const Text("No Color",
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 20))
                           : const SizedBox.shrink())
                       : Transform(
                           alignment: Alignment.center,
@@ -196,14 +207,17 @@ class _ColorCircleState extends State<ColorCircle> with SingleTickerProviderStat
                                 width: 100,
                                 decoration: BoxDecoration(
                                   color: widget.color,
-                                  borderRadius: const BorderRadius.all(Radius.circular(100)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(100)),
                                 ),
                               ),
                               const SizedBox(
                                 height: 10,
                               ),
                               Text(
-                                widget.color == null ? "No Color" : '#${widget.color!.value.toRadixString(16).toUpperCase()}',
+                                widget.color == null
+                                    ? "No Color"
+                                    : '#${widget.color!.value.toRadixString(16).toUpperCase()}',
                                 style: const TextStyle(color: Colors.black),
                               ),
                             ],

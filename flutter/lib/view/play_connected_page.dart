@@ -4,7 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class ConnectedPage extends ConsumerWidget {
-  const ConnectedPage({super.key});
+  final Color? color;
+  const ConnectedPage({super.key, this.color});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,7 +17,7 @@ class ConnectedPage extends ConsumerWidget {
     });
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Connected'),
+        title: color != null ? const Text('Connected') : Text("Share"),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

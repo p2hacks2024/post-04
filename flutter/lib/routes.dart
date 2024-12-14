@@ -21,19 +21,49 @@ final router = GoRouter(navigatorKey: navigatorKey, routes: [
         return const Splash();
       }),
   GoRoute(path: '/home', builder: (context, state) => const Home()),
-  GoRoute(path: '/play', builder: (context, state) => const PlayPage()),
-  GoRoute(path: '/play/connected', builder: (context, state) => ConnectedPage()),
-  GoRoute(path: '/play/charge', builder: (context, state) => const ChargePage()),
+  GoRoute(
+      path: '/play/connected',
+      builder: (context, state) => const ConnectedPage()),
+  GoRoute(
+      path: '/play/charge', builder: (context, state) => const ChargePage()),
   GoRoute(
       path: '/play/flash/:color',
       builder: (context, GoRouterState state) {
-        Color color = Color(int.parse(state.pathParameters['color'] ?? '0xFF000000'));
+        Color color =
+            Color(int.parse(state.pathParameters['color'] ?? '0xFF000000'));
         debugPrint('color: $color');
         return PlayFlashPage(color: color);
       }),
-  GoRoute(path: '/developer', builder: (context, state) => const DeveloperPage()),
-  GoRoute(path: '/usb_serial_example', builder: (context, state) => const UsbSerialSample(title: 'usb sample')),
-  GoRoute(path: '/developer/storage_example', builder: (context, state) => const StorageExample()),
-  GoRoute(path: '/developer/display_qr', builder: (context, state) => const DisplayQr()),
-  GoRoute(path: '/developer/load_qr', builder: (context, state) => const LoadQr(),)
+  GoRoute(
+      path: '/play/play/:isColorShare',
+      builder: (context, GoRouterState state) {
+        bool isColorShare =
+            bool.parse(state.pathParameters['isColorShare'] ?? "false");
+        debugPrint('isColorShare_routes.dart: $isColorShare');
+        return PlayPage(
+          isColorShare: isColorShare,
+        );
+      }),
+  GoRoute(
+    path: '/qr',
+    builder: (context, state) {
+      return const DisplayQr();
+    },
+  ),
+  GoRoute(path: '/qr/load', builder: (context, state) => const LoadQr()),
+  GoRoute(
+      path: '/developer', builder: (context, state) => const DeveloperPage()),
+  GoRoute(
+      path: '/usb_serial_example',
+      builder: (context, state) => const UsbSerialSample(title: 'usb sample')),
+  GoRoute(
+      path: '/developer/storage_example',
+      builder: (context, state) => const StorageExample()),
+  GoRoute(
+      path: '/developer/display_qr',
+      builder: (context, state) => const DisplayQr()),
+  GoRoute(
+    path: '/developer/load_qr',
+    builder: (context, state) => const LoadQr(),
+  )
 ]);
