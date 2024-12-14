@@ -34,9 +34,6 @@ class PrefsRepository implements IPrefsRepository {
     SharedPreferences prefs = ref.read(sharedPreferencesProvider);
     List<HistoryModel> history = [];
     if (prefs.containsKey('history')) {
-      if (ref.read(sharedPreferencesProvider).getStringList('history')!.isNotEmpty) {
-        debugPrint('${HistoryModel.fromJson(jsonDecode(ref.read(sharedPreferencesProvider).getStringList('history')![0]) as Map<String, dynamic>)}');
-      }
       history = prefs
           .getStringList('history')!
           .map((value) {
