@@ -31,20 +31,34 @@ class Home extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // figmaだと，少し右にずらしてるけど，何も調整しない方が真ん中だ
-              _homeIconButton(Icons.send_to_mobile, () {}, color: color),
+              _homeIconButton(
+                Icons.send_to_mobile,
+                onPressed: () {},
+                color: color,
+              ),
               const SizedBox(
                 width: 32,
               ),
               Transform.rotate(
                 angle: -pi,
-                child: _homeIconButton(Icons.tungsten, () {}, color: color),
+                child: _homeIconButton(
+                  Icons.tungsten,
+                  onPressed: () {
+                    context.push('/play');
+                  },
+                  color: color,
+                ),
               ),
               const SizedBox(
                 width: 32,
               ),
-              _homeIconButton(Icons.history, () {
-                context.push('/history');
-              }, color: color),
+              _homeIconButton(
+                Icons.history,
+                onPressed: () {
+                  context.push('/history');
+                },
+                color: color,
+              ),
             ],
           )
         ],
@@ -52,15 +66,14 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget _homeIconButton(IconData icon, Function() onPressed,
-      {Color? color, EdgeInsetsGeometry? padding}) {
+  Widget _homeIconButton(IconData icon, {required void Function() onPressed, Color? color, EdgeInsetsGeometry? padding}) {
     return IconButton(
-      onPressed: () => onPressed(),
+      onPressed: onPressed,
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       icon: Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(40)),
+            borderRadius: const BorderRadius.all(Radius.circular(40)),
             //border: Border.all(color: Colors.white, width: 6),
             boxShadow: [
               BoxShadow(

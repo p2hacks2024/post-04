@@ -1,4 +1,3 @@
-import 'package:epsilon_app/main.dart';
 import 'package:epsilon_app/view/history_page.dart';
 import 'package:epsilon_app/view/home_page.dart';
 import 'package:epsilon_app/developer_page/usb_serial_example.dart';
@@ -21,26 +20,18 @@ final router = GoRouter(navigatorKey: navigatorKey, routes: [
         return const Splash();
       }),
   GoRoute(path: '/home', builder: (context, state) => const Home()),
-  GoRoute(path: '/play', builder: (context, state) => PlayPage()),
-  GoRoute(
-      path: '/play/connected', builder: (context, state) => ConnectedPage()),
-  GoRoute(
-      path: '/play/charge', builder: (context, state) => const ChargePage()),
+  GoRoute(path: '/play', builder: (context, state) => const PlayPage()),
+  GoRoute(path: '/play/connected', builder: (context, state) => ConnectedPage()),
+  GoRoute(path: '/play/charge', builder: (context, state) => const ChargePage()),
   GoRoute(
       path: '/play/flash/:color',
       builder: (context, GoRouterState state) {
-        Color color =
-            Color(int.parse(state.pathParameters['color'] ?? '0xFF000000'));
+        Color color = Color(int.parse(state.pathParameters['color'] ?? '0xFF000000'));
         debugPrint('color: $color');
         return PlayFlashPage(color: color);
       }),
   GoRoute(path: '/history', builder: (context, state) => HistoryPage()),
-  GoRoute(
-      path: '/developer', builder: (context, state) => const DeveloperPage()),
-  GoRoute(
-      path: '/usb_serial_example',
-      builder: (context, state) => const UsbSerialSample(title: 'usb sample')),
-  GoRoute(
-      path: '/developer/storage_example',
-      builder: (context, state) => const StorageExample()),
+  GoRoute(path: '/developer', builder: (context, state) => const DeveloperPage()),
+  GoRoute(path: '/usb_serial_example', builder: (context, state) => const UsbSerialSample(title: 'usb sample')),
+  GoRoute(path: '/developer/storage_example', builder: (context, state) => const StorageExample()),
 ]);

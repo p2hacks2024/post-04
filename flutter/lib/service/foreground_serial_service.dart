@@ -30,8 +30,8 @@ class SerialService extends _$SerialService {
     }
 
     foregroundSerialService = ForegroundSerialService();
-    foregroundSerialService!.disconnectListerners.add(whenDisconnected);
-    foregroundSerialService!.connectListerners.add(whenConnected);
+    foregroundSerialService!.disconnectListeners.add(whenDisconnected);
+    foregroundSerialService!.connectListeners.add(whenConnected);
 
     ref.onDispose(() {
       connectAttemptTimer?.cancel();
@@ -50,7 +50,6 @@ class SerialService extends _$SerialService {
         timer.cancel();
       } else {
         var result = await foregroundSerialService!._getPorts();
-        debugPrint('isConnected: $result');
         if (result) {
           state = state.copyWith(isConnected: true);
         }
@@ -67,8 +66,8 @@ class SerialService extends _$SerialService {
 class ForegroundSerialService {
   UsbPort? _port;
 
-  List<Function()> disconnectListerners = [];
-  List<Function()> connectListerners = [];
+  List<Function()> disconnectListeners = [];
+  List<Function()> connectListeners = [];
 
   StreamSubscription<String>? _subscription;
   Transaction<String>? _transaction;
@@ -78,13 +77,13 @@ class ForegroundSerialService {
     UsbSerial.usbEventStream?.listen((UsbEvent msg) async {
       if (msg.event == UsbEvent.ACTION_USB_DETACHED) {
         if (_device != null && msg.device == _device) {
-          for (var action in disconnectListerners) {
+          for (var action in disconnectListeners) {
             action();
           }
         }
       } else if (msg.event == UsbEvent.ACTION_USB_ATTACHED) {
         if (_device != null && msg.device == _device) {
-          for (var action in connectListerners) {
+          for (var action in connectListeners) {
             action();
           }
         }
@@ -94,10 +93,8 @@ class ForegroundSerialService {
 
   // こいつを実行してやれば，arduinoとの接続ができる．(手動)
   Future<bool> _getPorts() async {
-    print('getPorts() start.');
     List<UsbDevice> devices = await UsbSerial.listDevices();
 
-    print('getPorts() devices=$devices.');
     if (devices.isEmpty) {
       return false;
     }
@@ -127,7 +124,6 @@ class ForegroundSerialService {
 
   Future<ArduinoMessage?> send(String value, {Function()? beforeOk, Function()? afterOk}) async {
     if (_port == null) {
-      print('Send() _port=null return.');
       return null;
     }
 
@@ -143,7 +139,6 @@ class ForegroundSerialService {
       if (isDone) return;
       message = ArduinoMessage.fromMessage(value.trim());
       if (message == null) return;
-      debugPrint('type: ${message!.type}');
       if (message!.type == 'OK.') {
         if (afterOk != null) {
           afterOk();
@@ -167,7 +162,6 @@ class ForegroundSerialService {
   }
 
   Future<bool> _connectTo(device) async {
-    print('connect to device: $device');
 
     if (_subscription != null) {
       _subscription!.cancel();
@@ -186,16 +180,13 @@ class ForegroundSerialService {
 
     if (device == null) {
       _device = null;
-      print('connectTo() device=null return.');
       return true;
     }
 
     _port = await device.create();
     if (await (_port!.open()) != true) {
-      print('connectTo() failed to open port.');
       return false;
     }
-    print('connectTo() device=$device.');
     _device = device;
 
     await _port!.setDTR(true);
@@ -207,7 +198,6 @@ class ForegroundSerialService {
     // Arduinoからのデータ受信
     _subscription = _transaction!.stream.listen((String line) {
       FlutterForegroundTask.sendDataToMain(line);
-      debugPrint('from Arduino:$line');
       var message = ArduinoMessage.fromMessage(line);
       for (var value in _listeners) {
         value(line);
@@ -218,7 +208,6 @@ class ForegroundSerialService {
       //}
     });
 
-    print('connectTo() end.');
     return true;
   }
 }
