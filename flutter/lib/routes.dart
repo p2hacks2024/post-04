@@ -5,6 +5,8 @@ import 'package:epsilon_app/view/play_charge_page.dart';
 import 'package:epsilon_app/view/play_connected_page.dart';
 import 'package:epsilon_app/view/play_flash_page.dart';
 import 'package:epsilon_app/view/play_page.dart';
+import 'package:epsilon_app/view/display_qr.dart';
+import 'package:epsilon_app/view/load_qr.dart';
 import 'package:epsilon_app/view/splash.dart';
 import 'package:epsilon_app/developer_page/storage_example.dart';
 import 'package:flutter/material.dart';
@@ -32,4 +34,6 @@ final router = GoRouter(navigatorKey: navigatorKey, routes: [
   GoRoute(path: '/developer', builder: (context, state) => const DeveloperPage()),
   GoRoute(path: '/usb_serial_example', builder: (context, state) => const UsbSerialSample(title: 'usb sample')),
   GoRoute(path: '/developer/storage_example', builder: (context, state) => const StorageExample()),
+  GoRoute(path: '/developer/display_qr', builder: (context, state) => const DisplayQr()),
+  GoRoute(path: '/developer/load_qr', builder: (context, state) => const LoadQr(),)
 ]);

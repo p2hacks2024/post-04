@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:epsilon_app/model/enums/arduino_message_type_enum.dart';
 import 'package:epsilon_app/service/foreground_serial_service.dart';
 import 'package:epsilon_app/state/play_state.dart';
@@ -24,5 +26,9 @@ class PlayViewModel extends _$PlayViewModel {
     if (result is ArduinoColorMessage) {
     }
     state = state.copyWith(response: result);
+  }
+
+  void setColor(Color color) {
+    state = state.copyWith(color: color);
   }
 }

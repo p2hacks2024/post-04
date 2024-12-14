@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$PlayState {
   bool get isSending => throw _privateConstructorUsedError;
   bool get isPressed => throw _privateConstructorUsedError;
+  Color? get color => throw _privateConstructorUsedError;
   ArduinoMessage? get response => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,7 +31,8 @@ abstract class $PlayStateCopyWith<$Res> {
   factory $PlayStateCopyWith(PlayState value, $Res Function(PlayState) then) =
       _$PlayStateCopyWithImpl<$Res, PlayState>;
   @useResult
-  $Res call({bool isSending, bool isPressed, ArduinoMessage? response});
+  $Res call(
+      {bool isSending, bool isPressed, Color? color, ArduinoMessage? response});
 }
 
 /// @nodoc
@@ -48,6 +50,7 @@ class _$PlayStateCopyWithImpl<$Res, $Val extends PlayState>
   $Res call({
     Object? isSending = null,
     Object? isPressed = null,
+    Object? color = freezed,
     Object? response = freezed,
   }) {
     return _then(_value.copyWith(
@@ -59,6 +62,10 @@ class _$PlayStateCopyWithImpl<$Res, $Val extends PlayState>
           ? _value.isPressed
           : isPressed // ignore: cast_nullable_to_non_nullable
               as bool,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as Color?,
       response: freezed == response
           ? _value.response
           : response // ignore: cast_nullable_to_non_nullable
@@ -75,7 +82,8 @@ abstract class _$$PlayStateImplCopyWith<$Res>
       __$$PlayStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isSending, bool isPressed, ArduinoMessage? response});
+  $Res call(
+      {bool isSending, bool isPressed, Color? color, ArduinoMessage? response});
 }
 
 /// @nodoc
@@ -91,6 +99,7 @@ class __$$PlayStateImplCopyWithImpl<$Res>
   $Res call({
     Object? isSending = null,
     Object? isPressed = null,
+    Object? color = freezed,
     Object? response = freezed,
   }) {
     return _then(_$PlayStateImpl(
@@ -102,6 +111,10 @@ class __$$PlayStateImplCopyWithImpl<$Res>
           ? _value.isPressed
           : isPressed // ignore: cast_nullable_to_non_nullable
               as bool,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as Color?,
       response: freezed == response
           ? _value.response
           : response // ignore: cast_nullable_to_non_nullable
@@ -114,7 +127,10 @@ class __$$PlayStateImplCopyWithImpl<$Res>
 
 class _$PlayStateImpl implements _PlayState {
   const _$PlayStateImpl(
-      {this.isSending = false, this.isPressed = false, this.response});
+      {this.isSending = false,
+      this.isPressed = false,
+      this.color,
+      this.response});
 
   @override
   @JsonKey()
@@ -123,11 +139,13 @@ class _$PlayStateImpl implements _PlayState {
   @JsonKey()
   final bool isPressed;
   @override
+  final Color? color;
+  @override
   final ArduinoMessage? response;
 
   @override
   String toString() {
-    return 'PlayState(isSending: $isSending, isPressed: $isPressed, response: $response)';
+    return 'PlayState(isSending: $isSending, isPressed: $isPressed, color: $color, response: $response)';
   }
 
   @override
@@ -139,12 +157,14 @@ class _$PlayStateImpl implements _PlayState {
                 other.isSending == isSending) &&
             (identical(other.isPressed, isPressed) ||
                 other.isPressed == isPressed) &&
+            (identical(other.color, color) || other.color == color) &&
             (identical(other.response, response) ||
                 other.response == response));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isSending, isPressed, response);
+  int get hashCode =>
+      Object.hash(runtimeType, isSending, isPressed, color, response);
 
   @JsonKey(ignore: true)
   @override
@@ -157,12 +177,15 @@ abstract class _PlayState implements PlayState {
   const factory _PlayState(
       {final bool isSending,
       final bool isPressed,
+      final Color? color,
       final ArduinoMessage? response}) = _$PlayStateImpl;
 
   @override
   bool get isSending;
   @override
   bool get isPressed;
+  @override
+  Color? get color;
   @override
   ArduinoMessage? get response;
   @override
