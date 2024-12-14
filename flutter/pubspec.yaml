@@ -53,6 +53,8 @@ dependencies:
   json_annotation: ^4.9.0
   carousel_slider: ^5.0.0
   design_sync: ^1.0.1
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^5.1.1
   flutter_svg: ^2.0.16
 
 dev_dependencies:

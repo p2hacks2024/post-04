@@ -16,8 +16,8 @@ class ChargePage extends ConsumerWidget {
       //#TODO ここを次のページに移す
       if (state.response == null) return;
       if (state.response is ArduinoColorMessage) {
-        var color = (state.response as ArduinoColorMessage).color;
-        context.pushReplacement('/play/flash/${color.value}');
+        var color = state.color;
+        context.pushReplacement('/play/flash/${color!.value}');
       } else {
         if (state.response!.type == ArduinoMessageType.invalid || state.response!.type == ArduinoMessageType.waitAMoment) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('メッセージが不正です')));
