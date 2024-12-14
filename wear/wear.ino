@@ -3,20 +3,11 @@
 #include <stdlib.h>
 #include "signal.h"
 #include "state.h"
+#include "charge.h"
 #include "explode.h"
 
-#define ACCELERO_X 1
-#define ACCELERO_Y 2
-#define ACCELERO_Z 3
-
-const int moveVectorThreshold = 750;
-
-LowPath lowPath = LowPath();
 WearableState currentState = WearableState::Waiting;
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(49, 6, NEO_GRB + NEO_KHZ800);
-
-int charging_timer = 0;
-int led_cnt = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -36,7 +27,9 @@ void loop() {
       // TODO: 色が明滅するようなエフェクトをつける
       break;
     case WearableState::Charge:
-      charging_action();
+      charging_action(
+        &strip
+      );
       break;
     case WearableState::Explode:
       // TODO: 評価関数をつくる
