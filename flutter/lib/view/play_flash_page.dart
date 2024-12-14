@@ -1,3 +1,4 @@
+import 'package:design_sync/design_sync.dart';
 import 'package:flutter/material.dart';
 
 class PlayFlashPage extends StatelessWidget {
@@ -7,11 +8,14 @@ class PlayFlashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flash'),
-      ),
       backgroundColor: color,
-      body: const Center(child: Text('Flash!!')),
+      body: Center(child: Text(
+        'Flash!!!',
+        style: TextStyle(
+            fontSize: 64.adaptedFontSize,
+            fontWeight: FontWeight.w800,
+          ),
+        )),
     );
   }
 }
