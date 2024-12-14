@@ -22,9 +22,14 @@ int anime_count = 0;
 
 void charging_animation(Adafruit_NeoPixel* strip);
 
+unsigned int eval_color(double seed1, double seed2) {
+  return abs(sin(seed1 * seed2)) * 160.0;
+}
+
 void charging_action(
   WearableState* currentState,
-  Adafruit_NeoPixel* strip
+  Adafruit_NeoPixel* strip,
+  unsigned int* explode_color
 ) {
   charging_animation(strip);
   
@@ -48,9 +53,16 @@ void charging_action(
     long ax_val = abs(ave - vec);
     if (lowPath.ready() && moveVectorLowerThreshold < ax_val && ax_val < moveVectorUpperThreshold) {
       char dat[50];
-      sprintf(dat, "x: %d, y: %d, z: %d, vec: %d\nave: %ld", axi, ayi, azi, vec, ave);
+      unsigned int r = eval_color(axi + 2300, millis() << (axi%5));
+      unsigned int g = eval_color(ayi + 2300, millis() << (ayi%5));
+      unsigned int b = eval_color(azi + 2300, millis() << (azi%5));
+
+      sprintf(dat, "CLR ff%02x%02x%02x", r, g, b);
       Serial.println(dat);
-      Serial.println("Triggered!");
+
+      explode_color[0] = r;
+      explode_color[1] = g;
+      explode_color[2] = b;
       *currentState = WearableState::Explode;
       set_explode_timer(millis());
     }

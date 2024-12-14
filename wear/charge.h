@@ -6,7 +6,8 @@
 
 void charging_action(
   WearableState* currentState,
-  Adafruit_NeoPixel* strip
+  Adafruit_NeoPixel* strip,
+  unsigned int* explode_color
 );
 
 void set_charging_timer(

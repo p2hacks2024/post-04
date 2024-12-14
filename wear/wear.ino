@@ -31,7 +31,8 @@ void loop() {
     case WearableState::Charge:
       charging_action(
         &currentState,
-        &strip
+        &strip,
+        explode_color
       );
       break;
     case WearableState::Explode:
