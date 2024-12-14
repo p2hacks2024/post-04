@@ -28,6 +28,7 @@ void loop() {
       break;
     case WearableState::Charge:
       charging_action(
+        &currentState,
         &strip
       );
       break;

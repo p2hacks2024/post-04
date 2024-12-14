@@ -1,5 +1,7 @@
 #include "charge.h"
+#include "explode.h"
 #include "signal.h"
+#include "state.h"
 
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
@@ -21,6 +23,7 @@ int anime_count = 0;
 void charging_animation(Adafruit_NeoPixel* strip);
 
 void charging_action(
+  WearableState* currentState,
   Adafruit_NeoPixel* strip
 ) {
   charging_animation(strip);
@@ -48,6 +51,8 @@ void charging_action(
       sprintf(dat, "x: %d, y: %d, z: %d, vec: %d\nave: %ld", axi, ayi, azi, vec, ave);
       Serial.println(dat);
       Serial.println("Triggered!");
+      *currentState = WearableState::Explode;
+      set_explode_timer(millis());
     }
   }
 }
