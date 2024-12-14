@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:design_sync/design_sync.dart';
 import 'package:epsilon_app/repository/shared_preferences.dart';
 import 'package:epsilon_app/routes.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,9 @@ void main() async {
       allowWifiLock: true,
     ),
   );
+
+  DesignSync.initialize(figmaCanvasSize: const Size(412, 915));
+
   runApp(
     ProviderScope(
       overrides: [

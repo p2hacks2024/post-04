@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math' show pi;
 
+import 'package:go_router/go_router.dart';
+
 class Home extends StatelessWidget {
   const Home({super.key});
 
@@ -34,7 +36,7 @@ class Home extends StatelessWidget {
               ),
               Transform.rotate(
                 angle: -pi,
-                child: _homeIconButton(Icons.tungsten, color: color),
+                child: _homeIconButton(Icons.tungsten, color: color, onPressed: () {context.push('/play');}),
               ),
               const SizedBox(
                 width: 32,
@@ -47,9 +49,9 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget _homeIconButton(IconData icon, {Color? color, EdgeInsetsGeometry? padding}) {
+  Widget _homeIconButton(IconData icon, {void Function()? onPressed, Color? color, EdgeInsetsGeometry? padding}) {
     return IconButton(
-      onPressed: () {},
+      onPressed: onPressed,
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       icon: Container(
