@@ -52,6 +52,7 @@ dependencies:
   json_serializable: ^6.8.0
   json_annotation: ^4.9.0
   design_sync: ^1.0.1
+  flutter_svg: ^2.0.16
 
 dev_dependencies:
   flutter_test:
@@ -76,7 +77,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+      - assets/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
