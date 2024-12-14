@@ -65,4 +65,5 @@ E-Motionを使って、今まで以上に感情表現を豊かに。このデバ
 その他開発に使用したツール・サービス
 * Figma
 * Illustrator
-* PhotoShop  
+* Photoshop
+* Premiere Pro
