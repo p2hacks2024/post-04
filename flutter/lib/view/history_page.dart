@@ -31,9 +31,11 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
     } else {
       history.forEach((value) => print(value.colorCode));
       debugPrint(history.length.toString());
-      //colorList = history.map((e) => ColorCircle(color: Color())).toList();
+      colorList = history
+          .map((e) =>
+              ColorCircle(color: Color(int.parse(e.colorCode, radix: 16))))
+          .toList();
     }
-    debugPrint("aiueo");
 
     if (colorList.isEmpty) {
       colorList.add(const ColorCircle());
@@ -67,11 +69,17 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
               return Container(
                 width: 15.0,
                 height: 15.0,
-                margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: (Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black)
-                        .withOpacity(_current == ((colorList.length - 1) - entry.key) ? 0.9 : 0.4)),
+                    color: (Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black)
+                        .withOpacity(
+                            _current == ((colorList.length - 1) - entry.key)
+                                ? 0.9
+                                : 0.4)),
               );
             }).toList(),
           ),
