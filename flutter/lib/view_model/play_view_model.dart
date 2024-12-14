@@ -28,6 +28,7 @@ class PlayViewModel extends _$PlayViewModel {
     if (result is ArduinoColorMessage) {
       // #TODO ここで色を保存する．
       ref.read(storageManagerProvider.notifier).addColor(inputColor: result.color);
+      // state = state.copyWith(color: result.color);
       await ref.read(storageManagerProvider.notifier).save();
       ref.read(playViewModelProvider.notifier).setColor(result.color);
     }

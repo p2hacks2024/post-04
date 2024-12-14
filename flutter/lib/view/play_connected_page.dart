@@ -38,7 +38,12 @@ class ConnectedPage extends ConsumerWidget {
                   ]),
                   child: TextButton(
                     onPressed: () async {
+                      debugPrint('Ready pushed.');
                       await ref.read(playViewModelProvider.notifier).start();
+                      debugPrint('PlayState.isSending: ${ref.watch(playViewModelProvider).isSending}');
+                      debugPrint('PlayState.isPressed: ${ref.watch(playViewModelProvider).isPressed}');
+                      debugPrint('PlayState.color: ${ref.watch(playViewModelProvider).color}');
+                      debugPrint('PlayState.response: ${ref.watch(playViewModelProvider).response}');
                     },
                     child: Text('Ready',
                         style: TextStyle(

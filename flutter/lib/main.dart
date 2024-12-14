@@ -1,10 +1,8 @@
-import 'dart:io';
 import 'package:design_sync/design_sync.dart';
 import 'package:epsilon_app/repository/shared_preferences.dart';
 import 'package:epsilon_app/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:shared_preferences/shared_preferences.dart';

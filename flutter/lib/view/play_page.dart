@@ -39,7 +39,6 @@ class _PlayPageState extends State<PlayPage> {
       }),
     );
   }
-
   Widget _connectWidget(bool isConnected) {
     const String waitingText =
         "Connect\nthe device's cable to\nyour smartphone";
