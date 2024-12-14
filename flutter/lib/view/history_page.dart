@@ -9,22 +9,19 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   int _current = 0;
-  final CarouselSliderController _controller = CarouselSliderController();
+  List<ColorCircle> colorList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    if (colorList.isEmpty) {
+      colorList.add(const ColorCircle());
+    }
+    colorList = colorList.reversed.toList();
+  }
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(MediaQuery.sizeOf(context).width.toString());
-    final List<ColorCircle> colorList = [
-      const ColorCircle(
-        color: Colors.red,
-      ),
-      const ColorCircle(
-        color: Colors.blue,
-      ),
-      const ColorCircle(
-        color: Colors.green,
-      ),
-    ];
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(100),
@@ -48,11 +45,13 @@ class _HistoryPageState extends State<HistoryPage> {
             child: CarouselSlider(
               items: colorList,
               options: CarouselOptions(
+                  reverse: true,
                   height: 380,
                   enableInfiniteScroll: false,
                   enlargeCenterPage: true,
                   enlargeStrategy: CenterPageEnlargeStrategy.scale,
-                  onPageChanged: (index, reason) {
+                  onPageChanged: (index, reason) async {
+                    colorList[_current].toggleFront();
                     setState(() {
                       _current = index;
                     });
@@ -62,19 +61,20 @@ class _HistoryPageState extends State<HistoryPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: colorList.asMap().entries.map((entry) {
-              return GestureDetector(
-                onTap: () => _controller.animateToPage(entry.key),
-                child: Container(
-                  width: 15.0,
-                  height: 15.0,
-                  margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: (Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black)
-                          .withOpacity(_current == entry.key ? 0.9 : 0.4)),
-                ),
+              return Container(
+                width: 15.0,
+                height: 15.0,
+                margin:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: (Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black)
+                        .withOpacity(
+                            _current == ((colorList.length - 1) - entry.key)
+                                ? 0.9
+                                : 0.4)),
               );
             }).toList(),
           ),

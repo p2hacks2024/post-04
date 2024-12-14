@@ -8,6 +8,10 @@ class ColorCircle extends StatefulWidget {
 
   @override
   State<ColorCircle> createState() => _ColorCircleState();
+
+  Future<void> toggleFront() async {
+    await _ColorCircleState().toggleFront();
+  }
 }
 
 class _ColorCircleState extends State<ColorCircle>
@@ -44,7 +48,7 @@ class _ColorCircleState extends State<ColorCircle>
     super.dispose();
   }
 
-  void _toggleFront() {
+  void _toggle() {
     if (!_isAnimating) {
       setState(() {
         _isAnimating = true;
@@ -55,6 +59,24 @@ class _ColorCircleState extends State<ColorCircle>
       } else {
         _animationController.reverse();
       }
+    }
+  }
+
+  Future<void> toggleFront() async {
+    toFront() {
+      if (_isFront) {
+      } else {
+        _toggle();
+      }
+    }
+
+    if (!_isAnimating) {
+      toFront();
+    } else {
+      while (_isAnimating) {
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+      toFront();
     }
   }
 
@@ -95,8 +117,10 @@ class _ColorCircleState extends State<ColorCircle>
                   child: _isFront
                       ? (widget.color == null
                           ? const Text("No Color",
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 20))
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600))
                           : const SizedBox.shrink())
                       : Transform(
                           alignment: Alignment.center,
@@ -120,7 +144,10 @@ class _ColorCircleState extends State<ColorCircle>
                                 widget.color == null
                                     ? "No Color"
                                     : '#${widget.color!.value.toRadixString(16).toUpperCase()}',
-                                style: const TextStyle(color: Colors.black),
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 20),
                               ),
                             ],
                           ),
@@ -130,7 +157,8 @@ class _ColorCircleState extends State<ColorCircle>
         ),
       ),
       onPressed: () {
-        _toggleFront();
+        if (widget.color == null) return;
+        _toggle();
       },
     );
   }
