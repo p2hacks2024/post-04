@@ -1,3 +1,4 @@
+import 'package:design_sync/design_sync.dart';
 import 'package:epsilon_app/model/enums/arduino_message_type_enum.dart';
 import 'package:epsilon_app/state/play_state.dart';
 import 'package:epsilon_app/view_model/play_view_model.dart';
@@ -23,9 +24,15 @@ class ChargePage extends ConsumerWidget {
         }
       }
     });
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text('charge'),
+        child: Text(
+          'Charge…',
+          style: TextStyle(
+            fontSize: 32.adaptedFontSize,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
       ),
     );
   }

@@ -41,7 +41,9 @@ class ConnectedPage extends ConsumerWidget {
                             blurRadius: 20)
                       ]),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await ref.read(playViewModelProvider.notifier).start();
+                    },
                     child: Text('Ready',
                         style: TextStyle(
                           color: Colors.white,
