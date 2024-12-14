@@ -3,6 +3,8 @@ import 'package:epsilon_app/view/widget/circular_color.dart';
 import 'package:flutter/material.dart';
 
 class HistoryPage extends StatefulWidget {
+  const HistoryPage({super.key});
+
   @override
   State<HistoryPage> createState() => _HistoryPageState();
 }
