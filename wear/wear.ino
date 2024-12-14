@@ -68,6 +68,8 @@ void serial_observer() {
 
     if (tag == "CRG") {
       if (currentState == WearableState::Waiting || currentState == WearableState::WaitingWithColor) {
+        currentState = WearableState::Charge;
+        set_charging_timer(millis());
         Serial.println("OK. 0");
       }
       else {
