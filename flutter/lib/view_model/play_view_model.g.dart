@@ -6,17 +6,14 @@ part of 'play_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$playViewModelHash() => r'4c52d4b5bb99113381c8d57094f579934cba5721';
+String _$playViewModelHash() => r'd11d22af001b1fb742024711afdb7f058383d9f4';
 
 /// See also [PlayViewModel].
 @ProviderFor(PlayViewModel)
-final playViewModelProvider =
-    AutoDisposeNotifierProvider<PlayViewModel, PlayState>.internal(
+final playViewModelProvider = AutoDisposeNotifierProvider<PlayViewModel, PlayState>.internal(
   PlayViewModel.new,
   name: r'playViewModelProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$playViewModelHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product') ? null : _$playViewModelHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
