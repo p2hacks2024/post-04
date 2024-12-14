@@ -69,15 +69,12 @@ class _UsbSerialSampleState extends State<UsbSerialSample> {
   @override
   void dispose() {
     super.dispose();
-    print('dispose() start.');
     _connectTo(null);
-    print('dispose() end.');
   }
 
   @override
   void initState() {
     super.initState();
-    print('initState() start.');
     UsbSerial.usbEventStream!.listen((UsbEvent event) {
       _getPorts();
     });
@@ -85,11 +82,9 @@ class _UsbSerialSampleState extends State<UsbSerialSample> {
     _getPorts();
     _init = true;
     setState(() {});
-    print('initState() end.');
   }
 
   Future<bool> _connectTo(device) async {
-    print('connect to device: $device');
     _serialData.clear();
 
     if (_subscription != null) {
@@ -112,7 +107,6 @@ class _UsbSerialSampleState extends State<UsbSerialSample> {
       setState(() {
         _status = 'Disconnected';
       });
-      print('connectTo() device=null return.');
       return true;
     }
 
@@ -121,10 +115,8 @@ class _UsbSerialSampleState extends State<UsbSerialSample> {
       setState(() {
         _status = 'Failed to open port';
       });
-      print('connectTo() failed to open port.');
       return false;
     }
-    print('connectTo() device=$device.');
     _device = device;
 
     await _port!.setDTR(true);
@@ -145,15 +137,12 @@ class _UsbSerialSampleState extends State<UsbSerialSample> {
     setState(() {
       _status = 'Connected';
     });
-    print('connectTo() end.');
     return true;
   }
 
   void _getPorts() async {
-    print('getPorts() start.');
     List<UsbDevice> devices = await UsbSerial.listDevices();
 
-    print('getPorts() devices=$devices.');
     if (devices.isEmpty) {
       _status = 'No devices';
     } else {
@@ -181,6 +170,5 @@ class _UsbSerialSampleState extends State<UsbSerialSample> {
     }
 
     setState(() {});
-    print('getPorts() end.');
   }
 }

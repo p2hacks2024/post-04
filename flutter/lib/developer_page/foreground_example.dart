@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:epsilon_app/service/forground_service.dart';
+import 'package:epsilon_app/service/foreground_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:flutter_foreground_task/models/notification_permission.dart';

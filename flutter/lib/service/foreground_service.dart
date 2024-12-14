@@ -6,7 +6,6 @@ import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 
 @pragma('vm:entry-point')
 void startCallback() {
-  print('startCallback');
   FlutterForegroundTask.setTaskHandler(MyTaskHandler());
 }
 
@@ -16,26 +15,20 @@ class MyTaskHandler extends TaskHandler {
   int _count = 0;
   @override
   Future<void> onDestroy(DateTime timestamp) async {
-    debugPrint('service destroyed');
-    print('service destroyed');
   }
 
   @override
   void onReceiveData(Object data) {
-    debugPrint('data received: $data');
     serialService?.send(data.toString());
   }
 
   @override
   void onRepeatEvent(DateTime timestamp) {
-    debugPrint(timestamp.toString());
   }
 
   @override
   Future<void> onStart(DateTime timestamp, TaskStarter starter) async {
-    debugPrint('service started');
     serialService = ForegroundSerialService();
-    print('service started');
   }
 
   void _incrementCount() {
