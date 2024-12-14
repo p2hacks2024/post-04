@@ -1,7 +1,9 @@
+#include <Adafruit_NeoPixel.h>
 #include <math.h>
 #include <stdlib.h>
 #include "signal.h"
 #include "state.h"
+#include "explode.h"
 
 #define ACCELERO_X 1
 #define ACCELERO_Y 2
@@ -11,12 +13,18 @@ const int moveVectorThreshold = 750;
 
 LowPath lowPath = LowPath();
 WearableState currentState = WearableState::Waiting;
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(49, 6, NEO_GRB + NEO_KHZ800);
+
+int charging_timer = 0;
+int led_cnt = 0;
 
 void setup() {
   Serial.begin(9600);
   // デバッグ用にChargeにしている。
   // ある程度コードが完成してきたらここでChargeにしないようにする。
-  currentState = WearableState::Charge;
+  currentState = WearableState::Explode;
+  strip.begin();
+  strip.show();
 }
 
 void loop() {
@@ -31,8 +39,14 @@ void loop() {
       charging_action();
       break;
     case WearableState::Explode:
-      // TODO: いい感じの爆発エフェクトをつける
       // TODO: 評価関数をつくる
+      explode_action(
+        &currentState,
+        &strip,
+        90, // Red
+        0, // Green
+        130   // Blue
+      );
       break;
     default:
       // UNREACHABLE
