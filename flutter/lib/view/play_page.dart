@@ -33,7 +33,8 @@ class _PlayPageState extends State<PlayPage> {
       }),
     );
   }
-
+// //デバッグ用
+            // TextButton(child: Text('connectをtrueにする'), onPressed: () {state = },)
   Widget _connectWidget(bool isConnected) {
     const String waitingText =
         "Connect\nthe device's cable to\nyour smartphone";

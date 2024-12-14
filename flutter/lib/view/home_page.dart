@@ -1,6 +1,5 @@
 import 'package:design_sync/design_sync.dart';
 import 'package:epsilon_app/component/app_bar.dart';
-import 'package:epsilon_app/repository/storage_manager.dart';
 import 'package:epsilon_app/view/widget/color_circle.dart';
 import 'package:epsilon_app/view_model/my_color_provider.dart';
 import 'package:flutter/material.dart';

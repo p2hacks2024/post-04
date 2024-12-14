@@ -107,7 +107,7 @@ class ForegroundSerialService {
       searchDevice = deviceIterator.current;
 
       // ArduinoのVendorIdだよ。
-      if (searchDevice.vid == DeviceId.arduinoVendorId) {
+      if (searchDevice.vid == DeviceId.arduinoVendorId || searchDevice.vid == DeviceId.marduinoVendorId) {
         searchRet = true;
         break;
       }
