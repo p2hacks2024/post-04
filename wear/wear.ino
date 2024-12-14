@@ -15,14 +15,12 @@ unsigned int explode_color[3] = {83, 255, 255};
 
 void setup() {
   Serial.begin(9600);
-  // デバッグ用にChargeにしている。
-  // ある程度コードが完成してきたらここでChargeにしないようにする。
-  currentState = WearableState::Explode;
   strip.begin();
   strip.show();
 }
 
 void loop() {
+  serial_observer();
   switch(currentState) {
     case WearableState::Waiting:
       // 今のところはなにもしない
@@ -38,7 +36,6 @@ void loop() {
       );
       break;
     case WearableState::Explode:
-      // TODO: 評価関数をつくる
       explode_action(
         &currentState,
         &strip,
@@ -62,10 +59,10 @@ void serial_observer() {
     }
   }
 
-  if (buffer_index > 0) {
-    String message = String(serial_buffer);//.trim();
+  if (buffer_index > 0 && serial_buffer[buffer_index - 1] == (char)10) {
+    String message = String(serial_buffer);
     message.trim();
-    String tag = message.substring(0, 2);
+    String tag = message.substring(0, 3);
 
     if (tag == "CRG") {
       if (currentState == WearableState::Waiting || currentState == WearableState::WaitingWithColor) {
@@ -85,7 +82,7 @@ void serial_observer() {
           Serial.println("INV 0");
         }
 
-        String r = payload.substring(2, 3), g = payload.substring(4, 5), b = payload.substring(6, 7);
+        String r = payload.substring(2, 4), g = payload.substring(4, 6), b = payload.substring(6, 8);
         explode_color[0] = strtol(r.c_str(), NULL, 16);
         explode_color[1] = strtol(g.c_str(), NULL, 16);
         explode_color[2] = strtol(b.c_str(), NULL, 16);
@@ -95,5 +92,8 @@ void serial_observer() {
         Serial.println("WAM 0");
       }
     }
+
+    for (int i = 0; i < 256; i++) serial_buffer[i] = 0;
+    buffer_index = 0;
   }
 }
