@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:epsilon_app/component/app_bar.dart';
 import 'package:epsilon_app/service/foreground_serial_service.dart';
 import 'package:epsilon_app/state/serial_service_state.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,7 @@ class _PlayPageState extends State<PlayPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text('Flash'),
-      ),
+      appBar: const MyAppBar(title: 'Flash'),
       body: Consumer(builder: (context, ref, _) {
         SerialServiceState state = ref.watch(serialServiceProvider);
         if (state.isConnected) {
