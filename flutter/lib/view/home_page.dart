@@ -100,7 +100,6 @@ class _ColorCircleState extends State<ColorCircle> with SingleTickerProviderStat
     _animationController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _animation = Tween(begin: 0.0, end: pi).animate(_animationController)
       ..addListener(() {
-        debugPrint(_animationController.value.toString());
         if ((0.6 > _animationController.value && _animationController.value > 0.5) && !_isReversed) {
           _isFront = !_isFront;
           _isReversed = true;
