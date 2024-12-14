@@ -2,18 +2,19 @@ import 'package:design_sync/design_sync.dart';
 import 'package:epsilon_app/component/app_bar.dart';
 import 'package:epsilon_app/repository/storage_manager.dart';
 import 'package:epsilon_app/view/widget/color_circle.dart';
+import 'package:epsilon_app/view_model/my_color_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:math' show pi;
 
 import 'package:go_router/go_router.dart';
 
-class Home extends StatelessWidget {
+class Home extends ConsumerWidget {
   const Home({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    Color? color = const Color(0xFF53FFFF);
+  Widget build(BuildContext context, WidgetRef ref) {
+    Color? color = ref.watch(myColorProvider);
     return Scaffold(
       appBar: const MyAppBar(title: "My Color", hasLeading: false),
       body: Column(
