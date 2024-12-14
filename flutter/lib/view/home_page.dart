@@ -43,7 +43,7 @@ class Home extends StatelessWidget {
                 child: _homeIconButton(
                   Icons.tungsten,
                   onPressed: () {
-                    context.push('/developer/storage_example');
+                    context.push('/play');
                   },
                   color: color,
                 ),
