@@ -50,7 +50,6 @@ class SerialService extends _$SerialService {
         timer.cancel();
       } else {
         var result = await foregroundSerialService!._getPorts();
-        debugPrint('isConnected: $result');
         if (result) {
           state = state.copyWith(isConnected: true);
         }
@@ -94,10 +93,8 @@ class ForegroundSerialService {
 
   // こいつを実行してやれば，arduinoとの接続ができる．(手動)
   Future<bool> _getPorts() async {
-    print('getPorts() start.');
     List<UsbDevice> devices = await UsbSerial.listDevices();
 
-    print('getPorts() devices=$devices.');
     if (devices.isEmpty) {
       return false;
     }
@@ -127,7 +124,6 @@ class ForegroundSerialService {
 
   Future<ArduinoMessage?> send(String value, {Function()? beforeOk, Function()? afterOk}) async {
     if (_port == null) {
-      print('Send() _port=null return.');
       return null;
     }
 
@@ -143,7 +139,6 @@ class ForegroundSerialService {
       if (isDone) return;
       message = ArduinoMessage.fromMessage(value.trim());
       if (message == null) return;
-      debugPrint('type: ${message!.type}');
       if (message!.type == 'OK.') {
         if (afterOk != null) {
           afterOk();
@@ -167,7 +162,6 @@ class ForegroundSerialService {
   }
 
   Future<bool> _connectTo(device) async {
-    print('connect to device: $device');
 
     if (_subscription != null) {
       _subscription!.cancel();
@@ -186,16 +180,13 @@ class ForegroundSerialService {
 
     if (device == null) {
       _device = null;
-      print('connectTo() device=null return.');
       return true;
     }
 
     _port = await device.create();
     if (await (_port!.open()) != true) {
-      print('connectTo() failed to open port.');
       return false;
     }
-    print('connectTo() device=$device.');
     _device = device;
 
     await _port!.setDTR(true);
@@ -207,7 +198,6 @@ class ForegroundSerialService {
     // Arduinoからのデータ受信
     _subscription = _transaction!.stream.listen((String line) {
       FlutterForegroundTask.sendDataToMain(line);
-      debugPrint('from Arduino:$line');
       var message = ArduinoMessage.fromMessage(line);
       for (var value in _listeners) {
         value(line);
@@ -218,7 +208,6 @@ class ForegroundSerialService {
       //}
     });
 
-    print('connectTo() end.');
     return true;
   }
 }

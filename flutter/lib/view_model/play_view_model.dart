@@ -23,7 +23,6 @@ class PlayViewModel extends _$PlayViewModel {
     });
     if (result == null) return;
     if (result is ArduinoColorMessage) {
-      debugPrint('result is : type: ${result.type}, value: ${result.color.toString()}');
     }
     state = state.copyWith(response: result);
   }

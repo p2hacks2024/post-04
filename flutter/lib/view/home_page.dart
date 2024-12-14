@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math' show pi;
 
+import 'package:go_router/go_router.dart';
+
 class Home extends StatelessWidget {
   const Home({super.key});
 
@@ -28,18 +30,32 @@ class Home extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // figmaだと，少し右にずらしてるけど，何も調整しない方が真ん中だ
-              _homeIconButton(Icons.send_to_mobile, color: color),
+              _homeIconButton(
+                Icons.send_to_mobile,
+                onPressed: () {},
+                color: color,
+              ),
               const SizedBox(
                 width: 32,
               ),
               Transform.rotate(
                 angle: -pi,
-                child: _homeIconButton(Icons.tungsten, color: color),
+                child: _homeIconButton(
+                  Icons.tungsten,
+                  onPressed: () {
+                    context.push('/play');
+                  },
+                  color: color,
+                ),
               ),
               const SizedBox(
                 width: 32,
               ),
-              _homeIconButton(Icons.history, color: color),
+              _homeIconButton(
+                Icons.history,
+                onPressed: () {},
+                color: color,
+              ),
             ],
           )
         ],
@@ -47,9 +63,12 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget _homeIconButton(IconData icon, {Color? color, EdgeInsetsGeometry? padding}) {
+  Widget _homeIconButton(IconData icon,
+      {required void Function() onPressed,
+      Color? color,
+      EdgeInsetsGeometry? padding}) {
     return IconButton(
-      onPressed: () {},
+      onPressed: onPressed,
       highlightColor: null,
       splashColor: null,
       hoverColor: null,
@@ -114,7 +133,8 @@ class _ColorCircleState extends State<ColorCircle> {
           padding: const EdgeInsets.all(12.0),
           child: Center(
               child: widget.color == null
-                  ? const Text("No Color", style: TextStyle(color: Colors.black, fontSize: 20))
+                  ? const Text("No Color",
+                      style: TextStyle(color: Colors.black, fontSize: 20))
                   : const SizedBox.shrink()),
         ),
       ),

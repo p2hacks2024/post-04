@@ -1,6 +1,3 @@
-import 'package:epsilon_app/main.dart';
-import 'package:epsilon_app/usb_serial_example.dart';
-import 'package:epsilon_app/view/developer_page.dart';
 import 'package:epsilon_app/view/home_page.dart';
 import 'package:epsilon_app/developer_page/usb_serial_example.dart';
 import 'package:epsilon_app/developer_page/developer_page.dart';
@@ -22,7 +19,7 @@ final router = GoRouter(navigatorKey: navigatorKey, routes: [
         return const Splash();
       }),
   GoRoute(path: '/home', builder: (context, state) => const Home()),
-  GoRoute(path: '/play', builder: (context, state) => PlayPage()),
+  GoRoute(path: '/play', builder: (context, state) => const PlayPage()),
   GoRoute(path: '/play/connected', builder: (context, state) => ConnectedPage()),
   GoRoute(path: '/play/charge', builder: (context, state) => const ChargePage()),
   GoRoute(

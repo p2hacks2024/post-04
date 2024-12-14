@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:epsilon_app/service/foreground_serial_service.dart';
 import 'package:epsilon_app/state/serial_service_state.dart';
 import 'package:flutter/material.dart';
@@ -32,13 +34,46 @@ class _PlayPageState extends State<PlayPage> {
           return const Center(
             child: Text('Connecting!!'),
           );
+        } else {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: <Widget>[
+                    Transform.translate(
+                      offset: const Offset(-165, 60),
+                      child: Transform.scale(
+                        scaleY: -1,
+                        child: Transform.rotate(
+                            angle: pi / 2,
+                            child: const Icon(Icons.cable, size: 242)),
+                      ),
+                    ),
+                    Transform.translate(
+                      offset: const Offset(200, 0),
+                      child: const Icon(
+                        Icons.stay_current_landscape,
+                        size: 300,
+                      ),
+                    ),
+                    const Icon(Icons.play_arrow_outlined, size: 100),
+                  ],
+                ),
+                const Text(
+                  '''
+Connect
+the device's cable to
+your smartphone
+          ''',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 24),
+                ),
+              ],
+            ),
+          );
         }
-        return Center(
-          child: Text(
-            '${state.isConnected}',
-            style: const TextStyle(fontSize: 24),
-          ),
-        );
       }),
     );
   }
