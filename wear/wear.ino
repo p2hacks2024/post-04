@@ -9,6 +9,8 @@
 WearableState currentState = WearableState::Waiting;
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(49, 6, NEO_GRB + NEO_KHZ800);
 
+unsigned int explode_color[3] = {83, 255, 255};
+
 void setup() {
   Serial.begin(9600);
   // デバッグ用にChargeにしている。
@@ -37,9 +39,9 @@ void loop() {
       explode_action(
         &currentState,
         &strip,
-        90, // Red
-        0, // Green
-        130   // Blue
+        explode_color[0], // Red
+        explode_color[1], // Green
+        explode_color[2]  // Blue
       );
       break;
     default:
