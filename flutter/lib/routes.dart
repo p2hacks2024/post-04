@@ -1,3 +1,4 @@
+import 'package:epsilon_app/view/history_page.dart';
 import 'package:epsilon_app/view/home_page.dart';
 import 'package:epsilon_app/developer_page/usb_serial_example.dart';
 import 'package:epsilon_app/developer_page/developer_page.dart';
@@ -58,6 +59,7 @@ final router = GoRouter(navigatorKey: navigatorKey, routes: [
     },
   ),
   GoRoute(path: '/qr/load', builder: (context, state) => const LoadQr()),
+  GoRoute(path: '/history', builder: (context, state) => HistoryPage()),
   GoRoute(path: '/developer', builder: (context, state) => const DeveloperPage()),
   GoRoute(path: '/usb_serial_example', builder: (context, state) => const UsbSerialSample(title: 'usb sample')),
   GoRoute(path: '/developer/storage_example', builder: (context, state) => const StorageExample()),
