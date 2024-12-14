@@ -15,13 +15,17 @@ class StorageManager extends _$StorageManager {
   }
 
   void addColor({required Color inputColor}) {
+    const listMax = 5;
     List<HistoryModel> historyList = [...state.history ?? []];
     historyList.add(
       HistoryModel(
-          colorCode: inputColor.value.toRadixString(16),
-          created: DateTime.now(),
-        ),
+        colorCode: inputColor.value.toRadixString(16),
+        created: DateTime.now(),
+      ),
     );
+    if (historyList.length > listMax) {
+      historyList = historyList.sublist(1);
+    }
     state = state.copyWith(
       history: historyList,
     );

@@ -1,4 +1,5 @@
 import 'package:epsilon_app/model/enums/arduino_message_type_enum.dart';
+import 'package:epsilon_app/repository/storage_manager.dart';
 import 'package:epsilon_app/service/foreground_serial_service.dart';
 import 'package:epsilon_app/state/play_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -22,7 +23,11 @@ class PlayViewModel extends _$PlayViewModel {
     });
     if (result == null) return;
     if (result is ArduinoColorMessage) {
+      // #TODO ここで色を保存する．
+      ref.read(storageManagerProvider.notifier).addColor(inputColor: result.color);
+      await ref.read(storageManagerProvider.notifier).save();
     }
+
     state = state.copyWith(response: result);
   }
 }
