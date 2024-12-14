@@ -19,9 +19,9 @@ class StorageManager extends _$StorageManager {
     List<HistoryModel> historyList = [...state.history ?? []];
     historyList.add(
       HistoryModel(
-          colorCode: inputColor.value.toRadixString(16),
-          created: DateTime.now(),
-        ),
+        colorCode: inputColor.value.toRadixString(16),
+        created: DateTime.now(),
+      ),
     );
     if (historyList.length > listMax) {
       historyList = historyList.sublist(1);

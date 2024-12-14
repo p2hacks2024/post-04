@@ -10,13 +10,10 @@ String _$storageManagerHash() => r'3efa1ea86c2cf2b09a4b81071022893b09abbd8b';
 
 /// See also [StorageManager].
 @ProviderFor(StorageManager)
-final storageManagerProvider =
-    AutoDisposeNotifierProvider<StorageManager, StorageState>.internal(
+final storageManagerProvider = AutoDisposeNotifierProvider<StorageManager, StorageState>.internal(
   StorageManager.new,
   name: r'storageManagerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$storageManagerHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product') ? null : _$storageManagerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
