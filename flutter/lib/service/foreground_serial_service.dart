@@ -30,8 +30,8 @@ class SerialService extends _$SerialService {
     }
 
     foregroundSerialService = ForegroundSerialService();
-    foregroundSerialService!.disconnectListerners.add(whenDisconnected);
-    foregroundSerialService!.connectListerners.add(whenConnected);
+    foregroundSerialService!.disconnectListeners.add(whenDisconnected);
+    foregroundSerialService!.connectListeners.add(whenConnected);
 
     ref.onDispose(() {
       connectAttemptTimer?.cancel();
@@ -66,8 +66,8 @@ class SerialService extends _$SerialService {
 class ForegroundSerialService {
   UsbPort? _port;
 
-  List<Function()> disconnectListerners = [];
-  List<Function()> connectListerners = [];
+  List<Function()> disconnectListeners = [];
+  List<Function()> connectListeners = [];
 
   StreamSubscription<String>? _subscription;
   Transaction<String>? _transaction;
@@ -77,13 +77,13 @@ class ForegroundSerialService {
     UsbSerial.usbEventStream?.listen((UsbEvent msg) async {
       if (msg.event == UsbEvent.ACTION_USB_DETACHED) {
         if (_device != null && msg.device == _device) {
-          for (var action in disconnectListerners) {
+          for (var action in disconnectListeners) {
             action();
           }
         }
       } else if (msg.event == UsbEvent.ACTION_USB_ATTACHED) {
         if (_device != null && msg.device == _device) {
-          for (var action in connectListerners) {
+          for (var action in connectListeners) {
             action();
           }
         }

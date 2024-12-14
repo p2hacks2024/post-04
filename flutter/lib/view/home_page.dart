@@ -73,7 +73,7 @@ class Home extends StatelessWidget {
       splashColor: Colors.transparent,
       icon: Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(40)),
+            borderRadius: const BorderRadius.all(Radius.circular(40)),
             //border: Border.all(color: Colors.white, width: 6),
             boxShadow: [
               BoxShadow(

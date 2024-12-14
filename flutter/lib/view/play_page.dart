@@ -41,7 +41,8 @@ class _PlayPageState extends State<PlayPage> {
         "Connect\nthe device's cable to\nyour smartphone";
     const String connectedText = 'Successfully\nconnected';
     const Widget waitingIcon = Icon(Icons.play_arrow_outlined, size: 100);
-    const Widget connectedIcon = Icon(Icons.check_circle_outline_rounded, color: Color.fromARGB(255, 83, 255, 103), size: 70);
+    const Widget connectedIcon = Icon(Icons.check_circle_outline_rounded,
+        color: Color.fromARGB(255, 83, 255, 103), size: 70);
     return Center(
       child: Padding(
         padding: const EdgeInsets.only(bottom: 50.5),
@@ -56,7 +57,9 @@ class _PlayPageState extends State<PlayPage> {
                   child: Transform.scale(
                     scaleY: -1,
                     child: Transform.rotate(
-                        angle: pi / 2, child: const Icon(Icons.cable, size: 242)),
+                      angle: pi / 2,
+                      child: const Icon(Icons.cable, size: 242),
+                    ),
                   ),
                 ),
                 Transform.translate(
@@ -74,7 +77,7 @@ class _PlayPageState extends State<PlayPage> {
               child: Text(
                 (isConnected ? connectedText : waitingText),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24),
+                style: const TextStyle(fontSize: 24),
               ),
             ),
           ],

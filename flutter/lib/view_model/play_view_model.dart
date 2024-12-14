@@ -1,7 +1,6 @@
 import 'package:epsilon_app/model/enums/arduino_message_type_enum.dart';
 import 'package:epsilon_app/service/foreground_serial_service.dart';
 import 'package:epsilon_app/state/play_state.dart';
-import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'play_view_model.g.dart';
