@@ -18,7 +18,7 @@ class PlayViewModel extends _$PlayViewModel {
   }
 
   Future<void> start() async {
-    ArduinoMessage? result = await _foregroundSerialService?.send('RDY 0', beforeOk: () {
+    ArduinoMessage? result = await _foregroundSerialService?.send('CRG 0', beforeOk: () {
       state = state.copyWith(isSending: true, isPressed: true);
     }, afterOk: () {
       state = state.copyWith(isSending: false);
@@ -27,7 +27,9 @@ class PlayViewModel extends _$PlayViewModel {
     if (result is ArduinoColorMessage) {
       // #TODO ここで色を保存する．
       ref.read(storageManagerProvider.notifier).addColor(inputColor: result.color);
+      // state = state.copyWith(color: result.color);
       await ref.read(storageManagerProvider.notifier).save();
+      ref.read(playViewModelProvider.notifier).setColor(result.color);
     }
 
     state = state.copyWith(response: result);
