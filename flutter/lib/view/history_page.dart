@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:epsilon_app/view/widget/circular_color.dart';
+import 'package:epsilon_app/component/app_bar.dart';
+import 'package:epsilon_app/view/widget/color_circle.dart';
 import 'package:flutter/material.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -25,21 +26,7 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 30),
-          child: AppBar(
-            title: const Text(
-              'History',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 32,
-              ),
-            ),
-          ),
-        ),
-      ),
+      appBar: const MyAppBar(title: "History"),
       body: Column(
         children: [
           Padding(
@@ -66,17 +53,11 @@ class _HistoryPageState extends State<HistoryPage> {
               return Container(
                 width: 15.0,
                 height: 15.0,
-                margin:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: (Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : Colors.black)
-                        .withOpacity(
-                            _current == ((colorList.length - 1) - entry.key)
-                                ? 0.9
-                                : 0.4)),
+                    color: (Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black)
+                        .withOpacity(_current == ((colorList.length - 1) - entry.key) ? 0.9 : 0.4)),
               );
             }).toList(),
           ),

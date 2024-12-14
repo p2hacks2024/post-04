@@ -1,4 +1,4 @@
-import 'package:epsilon_app/view/widget/circular_color.dart';
+import 'package:epsilon_app/view/widget/color_circle.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' show pi;
 
