@@ -1,3 +1,4 @@
+import 'package:design_sync/design_sync.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' show pi;
 
@@ -14,8 +15,7 @@ class ColorCircle extends StatefulWidget {
   }
 }
 
-class _ColorCircleState extends State<ColorCircle>
-    with SingleTickerProviderStateMixin {
+class _ColorCircleState extends State<ColorCircle> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
 
@@ -25,17 +25,13 @@ class _ColorCircleState extends State<ColorCircle>
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    _animationController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _animation = Tween(begin: 0.0, end: pi).animate(_animationController)
       ..addListener(() {
-        if ((0.6 > _animationController.value &&
-                _animationController.value > 0.5) &&
-            !_isReversed) {
+        if ((0.6 > _animationController.value && _animationController.value > 0.5) && !_isReversed) {
           _isFront = !_isFront;
           _isReversed = true;
-        } else if (_animationController.value == 1 ||
-            _animationController.value == 0) {
+        } else if (_animationController.value == 1 || _animationController.value == 0) {
           _isAnimating = false;
         }
         setState(() {});
@@ -86,11 +82,11 @@ class _ColorCircleState extends State<ColorCircle>
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       icon: Container(
-        height: 304,
-        width: 304,
+        height: 304.adaptedHeight,
+        width: 304.adaptedHeight,
         decoration: BoxDecoration(
             color: Colors.black,
-            borderRadius: const BorderRadius.all(Radius.circular(280)),
+            borderRadius: BorderRadius.all(Radius.circular(304.adaptedHeight)),
             boxShadow: widget.color == null
                 ? []
                 : [
@@ -105,10 +101,8 @@ class _ColorCircleState extends State<ColorCircle>
           alignment: Alignment.center,
           child: Container(
             decoration: BoxDecoration(
-              color: _isFront
-                  ? (widget.color ?? const Color.fromARGB(255, 161, 161, 161))
-                  : Colors.white,
-              borderRadius: const BorderRadius.all(Radius.circular(280)),
+              color: _isFront ? (widget.color ?? const Color.fromARGB(255, 161, 161, 161)) : Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(280.adaptedHeight)),
               border: Border.all(color: Colors.black, width: 12),
             ),
             child: Padding(
@@ -116,11 +110,7 @@ class _ColorCircleState extends State<ColorCircle>
               child: Center(
                   child: _isFront
                       ? (widget.color == null
-                          ? const Text("No Color",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600))
+                          ? const Text("No Color", style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600))
                           : const SizedBox.shrink())
                       : Transform(
                           alignment: Alignment.center,
@@ -129,25 +119,19 @@ class _ColorCircleState extends State<ColorCircle>
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                height: 100,
-                                width: 100,
+                                height: 100.adaptedHeight,
+                                width: 100.adaptedHeight,
                                 decoration: BoxDecoration(
                                   color: widget.color,
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(100)),
+                                  borderRadius: BorderRadius.all(Radius.circular(255.adaptedHeight)),
                                 ),
                               ),
-                              const SizedBox(
-                                height: 10,
+                              SizedBox(
+                                height: 10.adaptedHeight,
                               ),
                               Text(
-                                widget.color == null
-                                    ? "No Color"
-                                    : '#${widget.color!.value.toRadixString(16).toUpperCase()}',
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 20),
+                                widget.color == null ? "No Color" : '#${widget.color!.value.toRadixString(16).toUpperCase()}',
+                                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 20),
                               ),
                             ],
                           ),

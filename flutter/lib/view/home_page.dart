@@ -1,5 +1,9 @@
+import 'package:design_sync/design_sync.dart';
+import 'package:epsilon_app/component/app_bar.dart';
+import 'package:epsilon_app/repository/storage_manager.dart';
 import 'package:epsilon_app/view/widget/color_circle.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:math' show pi;
 
 import 'package:go_router/go_router.dart';
@@ -9,33 +13,35 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color? color = Color(0xFF53FFFF);
+    Color? color = const Color(0xFF53FFFF);
     return Scaffold(
+      appBar: const MyAppBar(title: "My Color", hasLeading: false),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Center(
-            child: Padding(
-              padding: EdgeInsets.only(top: 85, bottom: 138),
-              child: Text(
-                "My Color",
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
-              ),
-            ),
+          SizedBox(
+            height: 82.adaptedHeight,
           ),
           ColorCircle(
             color: color,
           ),
-          const Padding(padding: EdgeInsets.only(bottom: 140)),
+          SizedBox(
+            height: 116.adaptedHeight,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // figmaだと，少し右にずらしてるけど，何も調整しない方が真ん中だ
-              _homeIconButton(
-                Icons.send_to_mobile,
-                onPressed: () {},
-                color: color,
-              ),
+              Consumer(builder: (context, ref, _) {
+                return _homeIconButton(
+                  Icons.send_to_mobile,
+                  onPressed: () {
+                    ref.read(storageManagerProvider.notifier).addColor(inputColor: Colors.green);
+                    ref.read(storageManagerProvider.notifier).save();
+                  },
+                  color: color,
+                );
+              }),
               const SizedBox(
                 width: 32,
               ),
@@ -72,17 +78,13 @@ class Home extends StatelessWidget {
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       icon: Container(
-        decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(40)),
-            //border: Border.all(color: Colors.white, width: 6),
-            boxShadow: [
-              BoxShadow(
-                //color: Colors.white, blurStyle: BlurStyle.outer, blurRadius: 20,
-                color: color ?? const Color.fromARGB(255, 161, 161, 161),
-                blurStyle: BlurStyle.outer,
-                blurRadius: 20,
-              ),
-            ]),
+        decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(40)), boxShadow: [
+          BoxShadow(
+            color: color ?? const Color.fromARGB(255, 161, 161, 161),
+            blurStyle: BlurStyle.outer,
+            blurRadius: 20,
+          ),
+        ]),
         height: 80,
         width: 80,
         child: Padding(

@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:design_sync/design_sync.dart';
 import 'package:epsilon_app/component/app_bar.dart';
-import 'package:epsilon_app/repository/shared_preferences.dart';
 import 'package:epsilon_app/repository/storage_manager.dart';
 import 'package:epsilon_app/view/widget/color_circle.dart';
 import 'package:flutter/material.dart';
@@ -27,14 +27,8 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
     var history = ref.watch(storageManagerProvider).history;
     if (history == null) {
       colorList = [];
-      debugPrint("nullです");
     } else {
-      history.forEach((value) => print(value.colorCode));
-      debugPrint(history.length.toString());
-      colorList = history
-          .map((e) =>
-              ColorCircle(color: Color(int.parse(e.colorCode, radix: 16))))
-          .toList();
+      colorList = history.map((e) => ColorCircle(color: Color(int.parse(e.colorCode, radix: 16)))).toList();
     }
 
     if (colorList.isEmpty) {
@@ -45,13 +39,16 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
       appBar: const MyAppBar(title: "History"),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 32),
+          SizedBox(
+            height: 82.adaptedHeight,
+          ),
+          Transform.translate(
+            offset: const Offset(0, -20),
             child: CarouselSlider(
               items: colorList,
               options: CarouselOptions(
                   reverse: true,
-                  height: 380,
+                  height: 360,
                   enableInfiniteScroll: false,
                   enlargeCenterPage: true,
                   enlargeStrategy: CenterPageEnlargeStrategy.scale,
@@ -63,25 +60,22 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                   }),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: colorList.asMap().entries.map((entry) {
-              return Container(
-                width: 15.0,
-                height: 15.0,
-                margin:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: (Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : Colors.black)
-                        .withOpacity(
-                            _current == ((colorList.length - 1) - entry.key)
-                                ? 0.9
-                                : 0.4)),
-              );
-            }).toList(),
+          Transform.translate(
+            offset: const Offset(0, -10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: colorList.asMap().entries.map((entry) {
+                return Container(
+                  width: 15.0,
+                  height: 15.0,
+                  margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: (Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black)
+                          .withOpacity(_current == ((colorList.length - 1) - entry.key) ? 0.9 : 0.4)),
+                );
+              }).toList(),
+            ),
           ),
         ],
       ),
