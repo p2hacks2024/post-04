@@ -36,10 +36,7 @@ class Home extends ConsumerWidget {
               Consumer(builder: (context, ref, _) {
                 return _homeIconButton(
                   Icons.send_to_mobile,
-                  onPressed: () {
-                    ref.read(storageManagerProvider.notifier).addColor(inputColor: Colors.green);
-                    ref.read(storageManagerProvider.notifier).save();
-                  },
+                  onPressed: () {},
                   color: color,
                 );
               }),
