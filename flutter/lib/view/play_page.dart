@@ -18,7 +18,8 @@ class _PlayPageState extends State<PlayPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Play'),
+        backgroundColor: Colors.white,
+        title: const Text('Flash'),
       ),
       body: Consumer(builder: (context, ref, _) {
         SerialServiceState state = ref.watch(serialServiceProvider);
@@ -30,51 +31,55 @@ class _PlayPageState extends State<PlayPage> {
             }
           });
         }
-        if (state.isConnected) {
-          return const Center(
-            child: Text('Connecting!!'),
-          );
-        } else {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Stack(
-                  alignment: AlignmentDirectional.center,
-                  children: <Widget>[
-                    Transform.translate(
-                      offset: const Offset(-165, 60),
-                      child: Transform.scale(
-                        scaleY: -1,
-                        child: Transform.rotate(
-                            angle: pi / 2,
-                            child: const Icon(Icons.cable, size: 242)),
-                      ),
-                    ),
-                    Transform.translate(
-                      offset: const Offset(200, 0),
-                      child: const Icon(
-                        Icons.stay_current_landscape,
-                        size: 300,
-                      ),
-                    ),
-                    const Icon(Icons.play_arrow_outlined, size: 100),
-                  ],
+        return _connectWidget(state.isConnected);
+      }),
+    );
+  }
+
+  Widget _connectWidget(bool isConnected) {
+    const String waitingText =
+        "Connect\nthe device's cable to\nyour smartphone";
+    const String connectedText = 'Successfully\nconnected';
+    const Widget waitingIcon = Icon(Icons.play_arrow_outlined, size: 100);
+    const Widget connectedIcon = Icon(Icons.check_circle_outline_rounded, color: Color.fromARGB(255, 83, 255, 103), size: 70);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 50.5),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Stack(
+              alignment: AlignmentDirectional.center,
+              children: <Widget>[
+                Transform.translate(
+                  offset: const Offset(-165, 60),
+                  child: Transform.scale(
+                    scaleY: -1,
+                    child: Transform.rotate(
+                        angle: pi / 2, child: const Icon(Icons.cable, size: 242)),
+                  ),
                 ),
-                const Text(
-                  '''
-Connect
-the device's cable to
-your smartphone
-          ''',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24),
+                Transform.translate(
+                  offset: const Offset(200, 0),
+                  child: const Icon(
+                    Icons.stay_current_landscape,
+                    size: 300,
+                  ),
                 ),
+                (isConnected ? connectedIcon : waitingIcon),
               ],
             ),
-          );
-        }
-      }),
+            SizedBox(
+              height: 102,
+              child: Text(
+                (isConnected ? connectedText : waitingText),
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
