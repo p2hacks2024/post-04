@@ -23,7 +23,8 @@ class LoadQr extends ConsumerWidget {
 
             debugPrint('LoadQr detected color: ${Color(int.parse(capture.barcodes[0].rawValue!, radix: 16))}');
             debugPrint('LoadQr after PlayState: ${ref.watch(playViewModelProvider)}');
-            context.push('/play/flash/${Color(int.parse(capture.barcodes[0].rawValue!, radix: 16)).value}');
+            // context.push('/play/flash/${Color(int.parse(capture.barcodes[0].rawValue!, radix: 16)).value}');
+            context.push('/play/connected/${Color(int.parse(capture.barcodes[0].rawValue!, radix: 16)).value}');
           },
         ),
       ),

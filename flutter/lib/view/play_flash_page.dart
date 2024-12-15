@@ -60,22 +60,42 @@
 
 import 'package:design_sync/design_sync.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class PlayFlashPage extends StatelessWidget {
+class PlayFlashPage extends StatefulWidget {
   final Color color;
   const PlayFlashPage({super.key, required this.color});
 
   @override
+  State<PlayFlashPage> createState() => _PlayFlashPageState();
+}
+
+class _PlayFlashPageState extends State<PlayFlashPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await Future.delayed(const Duration(seconds: 3));
+      if (context.mounted) {
+        debugPrint("result: ${widget.color.value}");
+        context.go('/play/result/${widget.color.value}');
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: color,
-      body: Center(child: Text(
+      backgroundColor: widget.color,
+      body: Center(
+          child: Text(
         'Flash!!!',
         style: TextStyle(
-            fontSize: 64.adaptedFontSize,
-            fontWeight: FontWeight.w800,
-          ),
-        )),
+          fontSize: 64.adaptedFontSize,
+          fontWeight: FontWeight.w800,
+        ),
+      )),
     );
   }
 }

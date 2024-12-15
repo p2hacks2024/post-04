@@ -18,22 +18,42 @@ class PlayViewModel extends _$PlayViewModel {
     return const PlayState();
   }
 
-  Future<void> start() async {
-    ArduinoMessage? result = await _foregroundSerialService?.send('CRG 0', beforeOk: () {
-      state = state.copyWith(isSending: true, isPressed: true);
-    }, afterOk: () {
-      state = state.copyWith(isSending: false);
-    });
-    if (result == null) return;
-    if (result is ArduinoColorMessage) {
-      // #TODO ここで色を保存する．
-      ref.read(storageManagerProvider.notifier).addColor(inputColor: result.color);
-      // state = state.copyWith(color: result.color);
-      await ref.read(storageManagerProvider.notifier).save();
-      ref.read(playViewModelProvider.notifier).setColor(result.color);
-    }
+  Future<void> start({Color? color}) async {
+    if (color == null) {
+      ArduinoMessage? result = await _foregroundSerialService?.send('CRG 0', beforeOk: () {
+        state = state.copyWith(isSending: true, isPressed: true);
+      }, afterOk: () {
+        state = state.copyWith(isSending: false);
+      });
+      if (result == null) return;
+      if (result is ArduinoColorMessage) {
+        // #TODO ここで色を保存する．
+        ref.read(storageManagerProvider.notifier).addColor(inputColor: result.color);
+        // state = state.copyWith(color: result.color);
+        await ref.read(storageManagerProvider.notifier).save();
+        ref.read(playViewModelProvider.notifier).setColor(result.color);
+      }
 
-    state = state.copyWith(response: result);
+      state = state.copyWith(response: result);
+      // 色をシェアされた時
+    } else {
+      ArduinoMessage? result = await _foregroundSerialService?.send('SET ${color.value.toRadixString(16)}', beforeOk: () {
+        state = state.copyWith(isSending: true, isPressed: true);
+      }, afterOk: () {
+        state = state.copyWith(isSending: false);
+      });
+      debugPrint('SET ${color.value.toRadixString(16)}');
+      if (result == null) return;
+      if (result is ArduinoColorMessage) {
+        // #TODO ここで色を保存する．
+        ref.read(storageManagerProvider.notifier).addColor(inputColor: result.color);
+        // state = state.copyWith(color: result.color);
+        await ref.read(storageManagerProvider.notifier).save();
+        ref.read(playViewModelProvider.notifier).setColor(result.color);
+      }
+
+      state = state.copyWith(response: result);
+    }
   }
 
   void setColor(Color color) {

@@ -14,12 +14,13 @@ class ConnectedPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var state = ref.watch(playViewModelProvider);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      debugPrint(timeStamp.toString());
       if (state.isPressed && !state.isSending) {
         context.pushReplacement('/play/charge');
       }
     });
     return Scaffold(
-      appBar: const MyAppBar(title: 'Flash'),
+      appBar: (color == null) ? const MyAppBar(title: 'Flash') : const MyAppBar(title: 'Share'),
       body: Padding(
         padding: const EdgeInsets.only(top: 57.0),
         child: Center(
@@ -38,12 +39,7 @@ class ConnectedPage extends ConsumerWidget {
                   ]),
                   child: TextButton(
                     onPressed: () async {
-                      debugPrint('Ready pushed.');
-                      await ref.read(playViewModelProvider.notifier).start();
-                      debugPrint('PlayState.isSending: ${ref.watch(playViewModelProvider).isSending}');
-                      debugPrint('PlayState.isPressed: ${ref.watch(playViewModelProvider).isPressed}');
-                      debugPrint('PlayState.color: ${ref.watch(playViewModelProvider).color}');
-                      debugPrint('PlayState.response: ${ref.watch(playViewModelProvider).response}');
+                      await ref.read(playViewModelProvider.notifier).start(color: color);
                     },
                     child: Text('Ready',
                         style: TextStyle(

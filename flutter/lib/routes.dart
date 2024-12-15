@@ -8,6 +8,7 @@ import 'package:epsilon_app/view/play_flash_page.dart';
 import 'package:epsilon_app/view/play_page.dart';
 import 'package:epsilon_app/view/display_qr.dart';
 import 'package:epsilon_app/view/load_qr.dart';
+import 'package:epsilon_app/view/result.dart';
 import 'package:epsilon_app/view/splash.dart';
 import 'package:epsilon_app/developer_page/storage_example.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ final router = GoRouter(navigatorKey: navigatorKey, routes: [
       path: '/play/connected/:color',
       builder: (context, state) {
         Color? color;
-        if (state.pathParameters['color'] == null) {
+        if (state.pathParameters['color'] == '0') {
           color = null;
         } else {
           color = Color(int.parse(state.pathParameters['color']!));
@@ -51,6 +52,12 @@ final router = GoRouter(navigatorKey: navigatorKey, routes: [
         return PlayPage(
           isColorShare: isColorShare,
         );
+      }),
+  GoRoute(
+      path: '/play/result/:color',
+      builder: (context, state) {
+        Color color = Color(int.parse(state.pathParameters['color'] ?? '0xFF000000'));
+        return Result(color: color);
       }),
   GoRoute(
     path: '/qr',
