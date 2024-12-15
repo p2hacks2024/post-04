@@ -38,7 +38,7 @@ class ConnectedPage extends ConsumerWidget {
                   height: 58.adaptedHeight,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100.adaptedRadius),
-                      boxShadow: <BoxShadow>[BoxShadow(color: myColor, blurStyle: BlurStyle.outer, blurRadius: 20)]),
+                      boxShadow: <BoxShadow>[BoxShadow(color: myColor ?? Colors.white, blurStyle: BlurStyle.outer, blurRadius: 20)]),
                   child: TextButton(
                     onPressed: () async {
                       await ref.read(playViewModelProvider.notifier).start(color: color);

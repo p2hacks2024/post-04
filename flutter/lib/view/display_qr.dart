@@ -27,7 +27,9 @@ class DisplayQr extends ConsumerWidget {
                   borderRadius: BorderRadius.all(Radius.circular(20.adaptedWidth)),
                   border: Border.all(color: Colors.white, width: 30.adaptedWidth)),
               child: QrImageView(
-                data: ref.watch(myColorProvider).value.toRadixString(16),
+                data: ref.watch(myColorProvider) == null
+                    ? Colors.white.value.toRadixString(16)
+                    : ref.watch(myColorProvider)!.value.toRadixString(16),
               ),
             ),
           ),
