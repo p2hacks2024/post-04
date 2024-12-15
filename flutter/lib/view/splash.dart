@@ -1,4 +1,6 @@
+import 'package:design_sync/design_sync.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 class Splash extends StatelessWidget {
@@ -15,15 +17,18 @@ class Splash extends StatelessWidget {
             });
             return const SizedBox.shrink();
           } else {
-            return const Scaffold(
+            return Scaffold(
                 body: Center(
-              child: CircularProgressIndicator(),
+              child: Image.asset(
+                'assets/app_icon.png',
+                scale: 3.5,
+              ),
             ));
           }
         });
   }
 
   Future<void> init() async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 2));
   }
 }
