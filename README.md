@@ -29,6 +29,12 @@ E-Motionを使って、今まで以上に感情表現を豊かに。このデバ
 考えついても普通はやらない実装、5時間のはんだ付けの末に生まれた、驚異のフルカラーLED48個の同時最大輝度発光を可能にする着衣型デバイス。商用100V電源を採用し、発火のスリルがあなたの感情をさらに昂らせます。
 
 **スクリーンショット**  
+<img src=https://github.com/user-attachments/assets/0a3483ba-7dc7-4200-96ef-bd0617dfdb79 width=300/>
+<img src=https://github.com/user-attachments/assets/5b69be92-30ef-47d0-b2c0-2bd4a8a1ca38 width=300/>
+<img src=https://github.com/user-attachments/assets/599f7a88-3394-40ff-812f-77654b55194b width=300/>
+
+
+
 
 ## 開発体制  
 
