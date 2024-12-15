@@ -77,7 +77,7 @@ class Home extends ConsumerWidget {
       icon: Container(
         decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(40)), boxShadow: [
           BoxShadow(
-            color: color ?? const Color.fromARGB(255, 161, 161, 161),
+            color: color ?? Colors.white,
             blurStyle: BlurStyle.outer,
             blurRadius: 20,
           ),

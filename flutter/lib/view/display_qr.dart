@@ -35,13 +35,13 @@ class DisplayQr extends ConsumerWidget {
             height: 90.adaptedHeight,
           ),
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(40)),
                 //border: Border.all(color: Colors.white, width: 6),
                 boxShadow: [
                   BoxShadow(
                     //color: Colors.white, blurStyle: BlurStyle.outer, blurRadius: 20,
-                    color: Colors.blue,
+                    color: ref.watch(myColorProvider) ?? Colors.white,
                     blurStyle: BlurStyle.outer,
                     blurRadius: 20,
                   ),

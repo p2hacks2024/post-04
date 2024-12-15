@@ -1,5 +1,6 @@
 import 'package:design_sync/design_sync.dart';
 import 'package:epsilon_app/component/app_bar.dart';
+import 'package:epsilon_app/view_model/my_color_provider.dart';
 import 'package:epsilon_app/view_model/play_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,6 +14,7 @@ class ConnectedPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var state = ref.watch(playViewModelProvider);
+    var myColor = ref.watch(myColorProvider);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       debugPrint(timeStamp.toString());
       if (state.isPressed && !state.isSending) {
@@ -34,9 +36,9 @@ class ConnectedPage extends ConsumerWidget {
                 child: Container(
                   width: 256.adaptedWidth,
                   height: 58.adaptedHeight,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(100.adaptedRadius), boxShadow: const <BoxShadow>[
-                    BoxShadow(color: Color.fromARGB(200, 83, 255, 255), blurStyle: BlurStyle.outer, blurRadius: 20)
-                  ]),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100.adaptedRadius),
+                      boxShadow: <BoxShadow>[BoxShadow(color: myColor, blurStyle: BlurStyle.outer, blurRadius: 20)]),
                   child: TextButton(
                     onPressed: () async {
                       await ref.read(playViewModelProvider.notifier).start(color: color);
