@@ -21,7 +21,6 @@ void explode_action(
   if (explode_phase == 0) {
     if (elapsed < explode_duration) {
       double ratio = elapsed / (double)explode_duration;
-      Serial.println(ratio);
       for (int j = 1; j < strip->numPixels(); j++) {
         strip->setPixelColor(
           j,
