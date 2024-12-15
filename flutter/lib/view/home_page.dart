@@ -33,10 +33,19 @@ class Home extends ConsumerWidget {
             children: [
               // figmaだと，少し右にずらしてるけど，何も調整しない方が真ん中だ
               _homeIconButton(
+                greyOut: () {
+                  if (color == null) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                }(),
                 Icons.send_to_mobile,
-                onPressed: () {
-                  context.push('/qr');
-                },
+                onPressed: color == null
+                    ? () {}
+                    : () {
+                        context.push('/qr');
+                      },
                 color: color,
               ),
               const SizedBox(
@@ -69,19 +78,23 @@ class Home extends ConsumerWidget {
     );
   }
 
-  Widget _homeIconButton(IconData icon, {required void Function() onPressed, Color? color, EdgeInsetsGeometry? padding}) {
+  Widget _homeIconButton(IconData icon,
+      {required void Function() onPressed, Color? color, EdgeInsetsGeometry? padding, bool greyOut = false}) {
     return IconButton(
-      onPressed: onPressed,
+      onPressed: greyOut ? () {} : onPressed,
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       icon: Container(
-        decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(40)), boxShadow: [
-          BoxShadow(
-            color: color ?? Colors.white,
-            blurStyle: BlurStyle.outer,
-            blurRadius: 20,
-          ),
-        ]),
+        decoration: BoxDecoration(
+            color: greyOut ? Colors.grey : Colors.black,
+            borderRadius: const BorderRadius.all(Radius.circular(40)),
+            boxShadow: [
+              BoxShadow(
+                color: color ?? Colors.white,
+                blurStyle: BlurStyle.outer,
+                blurRadius: 20,
+              ),
+            ]),
         height: 80,
         width: 80,
         child: Padding(
