@@ -6,11 +6,11 @@ part of 'my_color_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$myColorHash() => r'b03d6862b1d731f5884ef0bcb531488cbae129a2';
+String _$myColorHash() => r'55b45c04f1943f8155086fd210b47d005c523c58';
 
 /// See also [MyColor].
 @ProviderFor(MyColor)
-final myColorProvider = AutoDisposeNotifierProvider<MyColor, Color>.internal(
+final myColorProvider = AutoDisposeNotifierProvider<MyColor, Color?>.internal(
   MyColor.new,
   name: r'myColorProvider',
   debugGetCreateSourceHash:
@@ -19,6 +19,6 @@ final myColorProvider = AutoDisposeNotifierProvider<MyColor, Color>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef _$MyColor = AutoDisposeNotifier<Color>;
+typedef _$MyColor = AutoDisposeNotifier<Color?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
