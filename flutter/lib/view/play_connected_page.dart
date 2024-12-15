@@ -1,5 +1,6 @@
 import 'package:design_sync/design_sync.dart';
 import 'package:epsilon_app/component/app_bar.dart';
+import 'package:epsilon_app/view_model/my_color_provider.dart';
 import 'package:epsilon_app/view_model/play_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,18 +8,21 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 class ConnectedPage extends ConsumerWidget {
-  const ConnectedPage({super.key});
+  final Color? color;
+  const ConnectedPage({super.key, this.color});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var state = ref.watch(playViewModelProvider);
+    var myColor = ref.watch(myColorProvider);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      debugPrint(timeStamp.toString());
       if (state.isPressed && !state.isSending) {
         context.pushReplacement('/play/charge');
       }
     });
     return Scaffold(
-      appBar: const MyAppBar(title: 'Flash'),
+      appBar: (color == null) ? const MyAppBar(title: 'Flash') : const MyAppBar(title: 'Share'),
       body: Padding(
         padding: const EdgeInsets.only(top: 57.0),
         child: Center(
@@ -34,20 +38,10 @@ class ConnectedPage extends ConsumerWidget {
                   height: 58.adaptedHeight,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100.adaptedRadius),
-                      boxShadow: const <BoxShadow>[
-                        BoxShadow(
-                            color: Color.fromARGB(200, 83, 255, 255),
-                            blurStyle: BlurStyle.outer,
-                            blurRadius: 20)
-                      ]),
+                      boxShadow: <BoxShadow>[BoxShadow(color: myColor, blurStyle: BlurStyle.outer, blurRadius: 20)]),
                   child: TextButton(
                     onPressed: () async {
-                      debugPrint('Ready pushed.');
-                      await ref.read(playViewModelProvider.notifier).start();
-                      debugPrint('PlayState.isSending: ${ref.watch(playViewModelProvider).isSending}');
-                      debugPrint('PlayState.isPressed: ${ref.watch(playViewModelProvider).isPressed}');
-                      debugPrint('PlayState.color: ${ref.watch(playViewModelProvider).color}');
-                      debugPrint('PlayState.response: ${ref.watch(playViewModelProvider).response}');
+                      await ref.read(playViewModelProvider.notifier).start(color: color);
                     },
                     child: Text('Ready',
                         style: TextStyle(

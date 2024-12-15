@@ -32,13 +32,13 @@ class Home extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // figmaだと，少し右にずらしてるけど，何も調整しない方が真ん中だ
-              Consumer(builder: (context, ref, _) {
-                return _homeIconButton(
-                  Icons.send_to_mobile,
-                  onPressed: () {},
-                  color: color,
-                );
-              }),
+              _homeIconButton(
+                Icons.send_to_mobile,
+                onPressed: () {
+                  context.push('/qr');
+                },
+                color: color,
+              ),
               const SizedBox(
                 width: 32,
               ),
@@ -47,7 +47,7 @@ class Home extends ConsumerWidget {
                 child: _homeIconButton(
                   Icons.tungsten,
                   onPressed: () {
-                    context.push('/play');
+                    context.push('/play/play/false');
                   },
                   color: color,
                 ),
@@ -77,7 +77,7 @@ class Home extends ConsumerWidget {
       icon: Container(
         decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(40)), boxShadow: [
           BoxShadow(
-            color: color ?? const Color.fromARGB(255, 161, 161, 161),
+            color: color ?? Colors.white,
             blurStyle: BlurStyle.outer,
             blurRadius: 20,
           ),
